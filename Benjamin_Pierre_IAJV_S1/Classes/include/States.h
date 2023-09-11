@@ -7,7 +7,7 @@ class States {
 	std::vector<Precondition> vecPreconditions;
 
 public:
-	
+
 	States() {
 		std::vector<Precondition> vecPreconditions;
 	}
@@ -25,6 +25,6 @@ public:
 	};
 
 	void ( *Action )(/*Le World de pierre*/);  // Function pointer to the action
-	// /*Fonction de précondition */
+	// /*Fonction de precondition */
 
 };

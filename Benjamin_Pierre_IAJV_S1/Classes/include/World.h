@@ -37,7 +37,7 @@ class World {
         void SetVillagerCount(unsigned int villagerCount);
         void SetWarriorCount(unsigned int warriorCount);
         void SetEnemyLivesCount(unsigned int enemyLivesCount);
-        void SetBreadCount(int breadCount);
+        void SetBreadCount(unsigned int breadCount);
         void SetIronCount(unsigned int myIronCount);
         void SetGoldCount(unsigned int myGoldCount);
         void SetWoodCount(unsigned int myWoodCount);

@@ -9,7 +9,13 @@
 
 
 void ActionCutWood() {
-	std::cout << "je coupe du bois" << std::endl;
+	std::cout << "Cutting wood." << std::endl;
+}
+
+void Action
+
+void InitActions() {
+
 }
 
 int main()
@@ -26,7 +32,7 @@ int main()
 
     World world = World();
     std::cout << world.GetBreadCount() << " bread" << std::endl;
-    world.SetBreadCount(-11);
+    world.SetBreadCount(5);
     std::cout << world.GetBreadCount() << " bread" << std::endl;
     return 0;
 

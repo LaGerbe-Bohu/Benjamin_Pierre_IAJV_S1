@@ -3,7 +3,6 @@
 //
 
 #include "../include/World.h"
-#include "cassert"
 
 World::World(unsigned int myVillagerCount, unsigned int myWarriorCount, unsigned int myEnemyLivesCount,
              unsigned int myBreadCount, unsigned int myIronCount, unsigned int myGoldCount,
@@ -51,50 +50,33 @@ unsigned int World::GetFarmCount() const {
 }
 
 void World::SetVillagerCount(unsigned int myVillagerCount) {
-    if (myVillagerCount > 0){
-        villagerCount = myVillagerCount;
-    }
+    villagerCount = myVillagerCount;
 }
 
 void World::SetWarriorCount(unsigned int myWarriorCount) {
-    if (myWarriorCount > 0){
-        warriorCount = myWarriorCount;
-    }
+    warriorCount = myWarriorCount;
 }
 
 void World::SetEnemyLivesCount(unsigned int myEnemyLivesCount) {
-    if (myEnemyLivesCount > 0){
-        enemyLivesCount = myEnemyLivesCount;
-    }
+    enemyLivesCount = myEnemyLivesCount;
 }
 
-void World::SetBreadCount(int myBreadCount) {
-    assert(myBreadCount > 0);
-    if (myBreadCount > 0){
-        breadCount = myBreadCount;
-    }
+void World::SetBreadCount(unsigned int myBreadCount) {
+    breadCount = myBreadCount;
 }
 
 void World::SetIronCount(unsigned int myIronCount) {
-    if (myIronCount > 0){
-        ironCount = myIronCount;
-    }
+    ironCount = myIronCount;
 }
 
 void World::SetGoldCount(unsigned int myGoldCount) {
-    if (myGoldCount > 0){
-        goldCount = myGoldCount;
-    }
+    goldCount = myGoldCount;
 }
 
 void World::SetWoodCount(unsigned int myWoodCount) {
-    if (myWoodCount > 0){
-        woodCount = myWoodCount;
-    }
+    woodCount = myWoodCount;
 }
 
 void World::SetFarmCount(unsigned int myFarmCount) {
-    if (myFarmCount > 0){
-        farmCount = myFarmCount;
-    }
+    farmCount = myFarmCount;
 }
