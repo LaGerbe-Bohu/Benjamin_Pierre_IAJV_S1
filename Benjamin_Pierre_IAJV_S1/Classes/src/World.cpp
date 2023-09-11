@@ -6,7 +6,7 @@
 
 World::World(unsigned int myVillagerCount, unsigned int myWarriorCount, unsigned int myEnemyLivesCount,
              unsigned int myBreadCount, unsigned int myIronCount, unsigned int myGoldCount,
-             unsigned int myWoodCount, unsigned int myFarmCount) {
+             unsigned int myWoodCount, unsigned int myFarmCount, bool myEnemyFound) {
     villagerCount = myVillagerCount;
     warriorCount = myWarriorCount;
     enemyLivesCount = myEnemyLivesCount;
@@ -15,6 +15,7 @@ World::World(unsigned int myVillagerCount, unsigned int myWarriorCount, unsigned
     goldCount = myGoldCount;
     woodCount = myWoodCount;
     farmCount = myFarmCount;
+    enemyFound = myEnemyFound;
 }
 
 unsigned int World::GetVillagerCount() const {
@@ -49,6 +50,10 @@ unsigned int World::GetFarmCount() const {
     return farmCount;
 }
 
+bool World::GetEnemyFound() const {
+    return enemyFound;
+}
+
 void World::SetVillagerCount(unsigned int myVillagerCount) {
     villagerCount = myVillagerCount;
 }
@@ -79,4 +84,8 @@ void World::SetWoodCount(unsigned int myWoodCount) {
 
 void World::SetFarmCount(unsigned int myFarmCount) {
     farmCount = myFarmCount;
+}
+
+void World::SetEnemyFound(bool myEnemyFound) {
+    enemyFound = myEnemyFound;
 }

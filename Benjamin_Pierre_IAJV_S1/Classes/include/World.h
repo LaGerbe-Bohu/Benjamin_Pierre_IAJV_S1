@@ -7,6 +7,7 @@ class World {
         unsigned int villagerCount;
         unsigned int warriorCount;
         unsigned int enemyLivesCount;
+        bool enemyFound;
 
         // Ressources
         unsigned int breadCount;
@@ -21,7 +22,8 @@ class World {
         // Default constructor
         explicit World(unsigned int myVillagerCount = 0, unsigned int myWarriorCount = 0,
               unsigned int myEnemyLivesCount = 10, unsigned int myBreadCount = 0, unsigned int myIronCount = 0,
-              unsigned int myGoldCount = 0, unsigned int myWoodCount = 0, unsigned int myFarmCount = 0);
+              unsigned int myGoldCount = 0, unsigned int myWoodCount = 0, unsigned int myFarmCount = 0,
+              bool myEnemyFound = false);
 
         // Getters
         unsigned int GetVillagerCount() const;
@@ -32,6 +34,7 @@ class World {
         unsigned int GetGoldCount() const;
         unsigned int GetWoodCount() const;
         unsigned int GetFarmCount() const;
+        bool GetEnemyFound() const;
 
         // Setters
         void SetVillagerCount(unsigned int villagerCount);
@@ -42,6 +45,7 @@ class World {
         void SetGoldCount(unsigned int myGoldCount);
         void SetWoodCount(unsigned int myWoodCount);
         void SetFarmCount(unsigned int myFarmCount);
+        void SetEnemyFound(bool myEnemyFound);
 };
 
 #endif //BENJAMIN_PIERRE_IAJV_S1_WORLD_H

@@ -9,36 +9,154 @@
 
 
 void ActionCutWood() {
-	std::cout << "je coupe du bois" << std::endl;
+	std::cout << "Cutting wood." << std::endl;
 }
 
-void ActionCreateVillager(  World* myWorld) {
+void ActionCreateVillager(World* myWorld) {
 	myWorld->SetVillagerCount(myWorld->GetVillagerCount() + 1);
 	myWorld->SetBreadCount(myWorld->GetBreadCount() - 1);
 }
 
-int InitStates() {
+void ActionCutWood(World* myWorld) {
+    myWorld->SetWoodCount(myWorld->GetWoodCount() + 1);
+}
+
+void ActionMineIron(World* myWorld) {
+    myWorld->SetIronCount(myWorld->GetIronCount() + 1);
+}
+
+void ActionMineGold(World* myWorld) {
+    myWorld->SetGoldCount(myWorld->GetGoldCount() + 1);
+}
+
+void ActionCreateFarm(World* myWorld) {
+    myWorld->SetFarmCount(myWorld->GetFarmCount() + 1);
+}
+
+void ActionCreateBread(World* myWorld) {
+    myWorld->SetBreadCount(myWorld->GetBreadCount() + 1);
+}
+
+void ActionCreateWarrior(World* myWorld) {
+    myWorld->SetWarriorCount(myWorld->GetWarriorCount() + 1);
+    myWorld->SetWoodCount(myWorld->GetWoodCount() - 5);
+}
+
+void ActionAttackEnemy(World* myWorld) {
+    myWorld->SetEnemyLivesCount(myWorld->GetEnemyLivesCount() - 10);
+    myWorld->SetWarriorCount(myWorld->GetWarriorCount() - 10);
+    myWorld->SetEnemyFound(false);
+}
+
+void ActionLookForEnemy(World* myWorld) {
+    myWorld->SetEnemyFound(true);
+}
+
+void InitStates() {
+    // Villager state
 	States CreateVillager;
+
+    Precondition prepVillager;
+    prepVillager.Condition = [](World* w) -> bool {
+        return w->GetBreadCount() > 0;
+    };
+    CreateVillager.AddPrecondition(&prepVillager);
+
 	CreateVillager.Action = ActionCreateVillager;
 
-	Precondition prep;
-	prep.Condition = [](World* w) -> bool {
-		return w->GetBreadCount() > 0 ;
-	};
+    CreateVillager.SetCost(1);
 
-	CreateVillager.AddPrecondition(prep);
+    // Wood state
+    States CutWood;
+
+    Precondition prepWood;
+    prepWood.Condition = [](World* w) -> bool {
+        return w->GetVillagerCount() > 0;
+    };
+    CutWood.AddPrecondition(&prepWood);
+
+    CutWood.Action = ActionCutWood;
+
+    CutWood.SetCost(1);
+
+    // Iron state
+    States MineIron;
+
+    Precondition prepIron;
+    prepIron.Condition = [](World* w) -> bool {
+        return w->GetVillagerCount() > 0;
+    };
+    MineIron.AddPrecondition(&prepIron);
+
+    MineIron.Action = ActionMineIron;
+
+    MineIron.SetCost(2);
+
+    // Gold state
+    States MineGold;
+
+    Precondition prepGold;
+    prepGold.Condition = [](World* w) -> bool {
+        return w->GetVillagerCount() > 0;
+    };
+    MineGold.AddPrecondition(&prepGold);
+
+    MineGold.Action = ActionMineGold;
+
+    MineGold.SetCost(2);
+
+    // Farm state
+    States CreateFarm;
+
+    Precondition prepFarm;
+    prepFarm.Condition = [](World* w) -> bool {
+        return w->GetVillagerCount() > 0 && w->GetWoodCount() > 4;
+    };
+    CreateFarm.AddPrecondition(&prepFarm);
+
+    CreateFarm.SetCost(2);
+
+    // Bread state
+    States CreateBread;
+
+    Precondition prepBread;
+    prepBread.Condition = [](World* w) -> bool {
+        return w->GetVillagerCount() > 0 && w->GetFarmCount() > 0;
+    };
+    CreateBread.AddPrecondition(&prepBread);
+
+    CreateBread.SetCost(2);
+
+    // Warrior state
+    States CreateWarrior;
+
+    Precondition prepWarrior;
+    prepWarrior.Condition = [](World* w) -> bool {
+        return w->GetIronCount() > 0 && w->GetGoldCount() > 0 && w->GetBreadCount() > 0;
+    };
+    CreateWarrior.AddPrecondition(&prepWarrior);
+
+    CreateWarrior.SetCost(5);
+
+    // Attack state
+    States AttackEnemy;
+
+    Precondition prepAttack;
+    prepAttack.Condition = [](World* w) -> bool {
+        return w->GetIronCount() > 0 && w->GetGoldCount() > 0 && w->GetBreadCount() > 0;
+    };
+    AttackEnemy.AddPrecondition(&prepAttack);
+
+    AttackEnemy.SetCost(10);
 
 }
 
 int main()
 {
 	InitStates();
-
 	World world = World();
 	std::cout << world.GetBreadCount() << " bread" << std::endl;
 	world.SetBreadCount(11);
 	std::cout << world.GetBreadCount() << " bread" << std::endl;
-
-
     return 0;
 }

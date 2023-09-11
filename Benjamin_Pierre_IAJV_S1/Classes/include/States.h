@@ -5,28 +5,31 @@
 class World;
 
 class States {
-	unsigned int cost;
-	std::vector<Precondition> vecPreconditions;
+    private:
+	    unsigned int cost;
+	    std::vector<Precondition> vecPreconditions;
 
-public:
+    public:
+        States() {
+            vecPreconditions = *(new std::vector<Precondition>);
+        }
 
-	States() {
-		std::vector<Precondition> vecPreconditions;
-	}
+        ~States() {
+            vecPreconditions.clear();
+        }
 
-	~States() {
-		vecPreconditions.clear();
-	}
+        void AddPrecondition(const Precondition* precondition) {
+            this->vecPreconditions.push_back(*precondition);
+        }
 
-	void AddPrecondition(Precondition precondition) {
-		this->vecPreconditions.push_back(precondition);
-	}
+        unsigned int GetCost() const {
+            return cost;
+        }
 
-	int GetCost() const {
-		return this->cost;
-	};
+        void SetCost(unsigned int myCost) {
+            cost = myCost;
+        }
 
-	void ( *Action )( World* world);  // Function pointer to the action
-	// /*Fonction de precondition */
-
+    void ( *Action )( World* world){};  // Function pointer to the action
+        // /*Fonction de precondition */
 };
