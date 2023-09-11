@@ -12,22 +12,33 @@ void ActionCutWood() {
 	std::cout << "je coupe du bois" << std::endl;
 }
 
-int main()
-{
+void ActionCreateVillager(  World* myWorld) {
+	myWorld->SetVillagerCount(myWorld->GetVillagerCount() + 1);
+	myWorld->SetBreadCount(myWorld->GetBreadCount() - 1);
+}
+
+int InitStates() {
+	States CreateVillager;
+	CreateVillager.Action = ActionCreateVillager;
 
 	Precondition prep;
-	prep.Condition = []() -> bool { return true; };
+	prep.Condition = [](World* w) -> bool { 
+		return w->GetBreadCount() > 0 ; 
+	};	
 
-	States state;
-	state.AddPrecondition(prep);
+	CreateVillager.AddPrecondition(prep);
 
-	state.Action = ActionCutWood;
-	state.Action();
+}
 
-    World world = World();
-    std::cout << world.GetBreadCount() << " bread" << std::endl;
-    world.SetBreadCount(-11);
-    std::cout << world.GetBreadCount() << " bread" << std::endl;
+int main()
+{
+	InitStates();
+	
+	World world = World();
+	std::cout << world.GetBreadCount() << " bread" << std::endl;
+	world.SetBreadCount(11);
+	std::cout << world.GetBreadCount() << " bread" << std::endl;
+
+
     return 0;
-
 }
