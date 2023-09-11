@@ -1,12 +1,23 @@
 ﻿// Benjamin_Pierre_IAJV_S1.cpp : Defines the entry point for the application.
 //
 
-#include "../include/Application.h"
+#include <iostream>
+#include "../include/States.h"
+#include "../include/Precondition.h"
 
-using namespace std;
+void ActionCutWood() {
+	std::cout << "je coupe du bois" << std::endl;
+}
 
 int main()
 {
-	cout << "Hello CMake." << endl;
+	Precondition prep;
+	prep.Condition = []() -> bool { return true; };
+
+	States state;
+	state.AddPrecondition(prep);
+
+	state.Action = ActionCutWood;
+	state.Action();
 	return 0;
 }
