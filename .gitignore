@@ -4,6 +4,7 @@
 .vs/
 .idea/
 out/
+cmake-build-debug/
 
 ### CMake ###
 CMakeLists.txt.user
