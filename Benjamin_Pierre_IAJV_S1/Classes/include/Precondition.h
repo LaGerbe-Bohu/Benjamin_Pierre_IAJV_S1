@@ -2,6 +2,8 @@
 #include <vector>
 #include <string>
 
+class World;
+
 class Precondition
 {
 	std::string label;
@@ -11,5 +13,5 @@ class Precondition
 		return label;
 	}
 
-	bool(*Condition)(/*World*/);
+	bool(*Condition)( World* world);
 };

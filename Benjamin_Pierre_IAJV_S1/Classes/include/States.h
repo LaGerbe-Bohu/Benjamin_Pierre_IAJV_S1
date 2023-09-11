@@ -2,6 +2,8 @@
 #include <vector>
 #include "Precondition.h"
 
+class World;
+
 class States {
 	unsigned int cost;
 	std::vector<Precondition> vecPreconditions;
@@ -24,7 +26,7 @@ public:
 		return this->cost;
 	};
 
-	void ( *Action )(/*Le World de pierre*/);  // Function pointer to the action
+	void ( *Action )( World* world);  // Function pointer to the action
 	// /*Fonction de precondition */
 
 };
