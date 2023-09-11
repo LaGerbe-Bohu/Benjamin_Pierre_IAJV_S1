@@ -3,7 +3,7 @@
 #
 
 # Add source to this project's executable.
-add_executable (Benjamin_Pierre_IAJV_S1 "Benjamin_Pierre_IAJV_S1.cpp" "Benjamin_Pierre_IAJV_S1.h")
+add_executable (Benjamin_Pierre_IAJV_S1 "Application.cpp" "Application.h")
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET Benjamin_Pierre_IAJV_S1 PROPERTY CXX_STANDARD 20)
