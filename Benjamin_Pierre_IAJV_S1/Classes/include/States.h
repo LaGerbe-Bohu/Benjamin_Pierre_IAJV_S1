@@ -8,23 +8,29 @@ class States {
 	unsigned int cost;
 	std::vector<Precondition> vecPreconditions;
 
-public:
-	
+	public:
 	States() {
-		std::vector<Precondition> vecPreconditions;
+		
 	}
 
 	~States() {
 		vecPreconditions.clear();
 	}
 
-	void AddPrecondition(Precondition precondition) {
-		this->vecPreconditions.push_back(precondition);
+	void AddPrecondition(const Precondition* precondition) {
+		this->vecPreconditions.push_back(*precondition);
 	}
 
 	int GetCost() const {
 		return this->cost;
 	};
+
+
+	std::vector<Precondition> GetPreconditions() const {
+		return this->vecPreconditions;
+	}
+
+	int NonMetPreconditions(const World*);
 
 	void ( *Action )( World* world);  // Function pointer to the action
 	// /*Fonction de précondition */

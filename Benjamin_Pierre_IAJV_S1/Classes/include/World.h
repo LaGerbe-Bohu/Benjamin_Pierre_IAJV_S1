@@ -23,6 +23,27 @@ class World {
               unsigned int myEnemyLivesCount = 10, unsigned int myBreadCount = 0, unsigned int myIronCount = 0,
               unsigned int myGoldCount = 0, unsigned int myWoodCount = 0, unsigned int myFarmCount = 0);
 
+        World(World* myWorld) {
+            this->breadCount = myWorld->breadCount;
+            this->enemyLivesCount = myWorld->enemyLivesCount;
+            this->farmCount = myWorld->farmCount;
+            this->villagerCount = myWorld->villagerCount;
+            this->warriorCount = myWorld->warriorCount;
+            this->enemyLivesCount = myWorld->enemyLivesCount;
+        }
+
+
+        World& operator=(const World* myWorld) {
+            this->breadCount = myWorld->breadCount;
+            this->enemyLivesCount = myWorld->enemyLivesCount;
+            this->farmCount = myWorld->farmCount;
+            this->villagerCount = myWorld->villagerCount;
+            this->warriorCount = myWorld->warriorCount;
+            this->enemyLivesCount = myWorld->enemyLivesCount;
+
+            return *this;
+        }
+
         // Getters
         unsigned int GetVillagerCount() const;
         unsigned int GetWarriorCount() const;

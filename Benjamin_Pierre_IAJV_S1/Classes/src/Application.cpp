@@ -7,7 +7,6 @@
 #include "../include/Precondition.h"
 #include "../include/World.h"
 
-
 void ActionCutWood() {
 	std::cout << "je coupe du bois" << std::endl;
 }
@@ -17,16 +16,16 @@ void ActionCreateVillager(  World* myWorld) {
 	myWorld->SetBreadCount(myWorld->GetBreadCount() - 1);
 }
 
-int InitStates() {
+void InitStates() {
 	States CreateVillager;
 	CreateVillager.Action = ActionCreateVillager;
 
 	Precondition prep;
-	prep.Condition = [](World* w) -> bool { 
+	prep.Condition = [](const World* w) -> bool { 
 		return w->GetBreadCount() > 0 ; 
 	};	
 
-	CreateVillager.AddPrecondition(prep);
+	CreateVillager.AddPrecondition(&prep);
 
 }
 
@@ -35,9 +34,10 @@ int main()
 	InitStates();
 	
 	World world = World();
-	std::cout << world.GetBreadCount() << " bread" << std::endl;
-	world.SetBreadCount(11);
-	std::cout << world.GetBreadCount() << " bread" << std::endl;
+	std::cout << " Bread : " << world.GetBreadCount() << std::endl;
+	std::cout << " Villager : " << world.GetVillagerCount() << std::endl;
+	std::cout << " Warrior : " << world.GetWarriorCount() << std::endl;
+	std::cout << " Warrior : " << world.GetEnemyLivesCount() << std::endl;
 
 
     return 0;

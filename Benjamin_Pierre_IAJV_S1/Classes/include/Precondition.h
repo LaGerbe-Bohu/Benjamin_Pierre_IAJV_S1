@@ -13,5 +13,5 @@ class Precondition
 		return label;
 	}
 
-	bool(*Condition)( World* world);
+	bool(*Condition)(const World* world);
 };
