@@ -8,7 +8,7 @@ file(GLOB_RECURSE Classes
      "*.cpp"
 )
 
-add_executable (Benjamin_Pierre_IAJV_S1 ${Classes} "Classes/include/Precondition.h" "Classes/include/StatesMachine.h")
+add_executable (Benjamin_Pierre_IAJV_S1 ${Classes})
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET Benjamin_Pierre_IAJV_S1 PROPERTY CXX_STANDARD 20)
