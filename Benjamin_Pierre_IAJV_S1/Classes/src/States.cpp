@@ -6,8 +6,10 @@ int States::NonMetPreconditions( const World* world) {
 
 	for (int i = 0; i < vecPreconditions.size(); i++)
 	{
-		if (vecPreconditions[i].Condition(world))
+		if (!vecPreconditions[i].Condition(world)) {
 			idx++;
+		}
+			
 	}
 
 	return idx;

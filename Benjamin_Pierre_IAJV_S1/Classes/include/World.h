@@ -32,6 +32,10 @@ class World {
             this->villagerCount = myWorld->villagerCount;
             this->warriorCount = myWorld->warriorCount;
             this->enemyLivesCount = myWorld->enemyLivesCount;
+            this->enemyFound = myWorld->enemyFound;
+            this->goldCount = myWorld->goldCount;
+            this->ironCount = myWorld->ironCount;
+        
         }
 
 
@@ -42,6 +46,9 @@ class World {
             this->villagerCount = myWorld->villagerCount;
             this->warriorCount = myWorld->warriorCount;
             this->enemyLivesCount = myWorld->enemyLivesCount;
+            this->enemyFound = myWorld->enemyFound;
+            this->goldCount = myWorld->goldCount;
+            this->ironCount = myWorld->ironCount;
 
             return *this;
         }

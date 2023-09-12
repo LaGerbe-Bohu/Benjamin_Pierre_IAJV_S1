@@ -2,6 +2,7 @@
 #include <vector>
 
 class Precondition;
+class States;
 class World;
 
 class Node {
@@ -11,9 +12,9 @@ class Node {
 	Node* prev;
 
 public:
-	Node(int myHeuristique, States* myState,World* myWorld) :myHeuristique(heuristique),myState(State),myWorld(World) {};
-	Node(States* myState, World* myWorld) : myState(State), myWorld(World) {}
-
+	Node(int myHeuristique,  States* myState,World* myWorld) :heuristique(myHeuristique), State(myState), currentWorld(myWorld) {};
+	Node( States* myState, World* myWorld) : State(myState), currentWorld(myWorld) {}
+	
 	~Node() {
 		delete currentWorld;
 		delete State;
@@ -31,7 +32,9 @@ public:
 		return this->State;
 	}
 
-	void GetPrev() {
+
+
+	Node* GetPrev() {
 		return this->prev;
 	}
 
@@ -48,7 +51,6 @@ public:
 	}
 
 	int PathNonMetPreconditions(const World* world);
-
 };
 
 class GoapMachine {
@@ -56,12 +58,12 @@ class GoapMachine {
 	std::vector<Node*> openNode;
 	std::vector<Precondition*> vecNotMet;
 	std::vector<States*> possibleStates;
-	World world;
+	World* world;
 
 	public :
-	GoapMachine(std::vector<States*> myPossibleStates,World myWorld):possibleStates(myPossibleStates),myWorld(world) {};
+	GoapMachine(std::vector<States*> myPossibleStates,World* myWorld):possibleStates(myPossibleStates), world(myWorld) {};
 
-	void Execute(const States myRoot);
+	Node* Execute(States* myRoot);
 
 	void AddAllOptionsToOpenNode();
 
