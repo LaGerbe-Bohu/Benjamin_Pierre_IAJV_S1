@@ -1,0 +1,60 @@
+#pragma one
+#include <vector>
+#include "Precondition.h"
+
+class World;
+
+class States {
+    private:
+	    unsigned int cost;
+	    std::vector<Precondition> vecPreconditions;
+
+<<<<<<< HEAD
+	public:
+	States() {
+		
+	}
+=======
+    public:
+        States() {
+            vecPreconditions = *(new std::vector<Precondition>);
+        }
+>>>>>>> dcd843f0cb176b613e68104d8f89e84c66ceac9c
+
+        ~States() {
+            vecPreconditions.clear();
+        }
+
+<<<<<<< HEAD
+	void AddPrecondition(const Precondition* precondition) {
+		this->vecPreconditions.push_back(*precondition);
+	}
+=======
+        void AddPrecondition(const Precondition* precondition) {
+            this->vecPreconditions.push_back(*precondition);
+        }
+>>>>>>> dcd843f0cb176b613e68104d8f89e84c66ceac9c
+
+        unsigned int GetCost() const {
+            return cost;
+        }
+
+<<<<<<< HEAD
+
+	std::vector<Precondition> GetPreconditions() const {
+		return this->vecPreconditions;
+	}
+
+	int NonMetPreconditions(const World*);
+
+	void ( *Action )( World* world);  // Function pointer to the action
+	// /*Fonction de précondition */
+=======
+        void SetCost(unsigned int myCost) {
+            cost = myCost;
+        }
+>>>>>>> dcd843f0cb176b613e68104d8f89e84c66ceac9c
+
+    void ( *Action )( World* world){};  // Function pointer to the action
+        // /*Fonction de precondition */
+};

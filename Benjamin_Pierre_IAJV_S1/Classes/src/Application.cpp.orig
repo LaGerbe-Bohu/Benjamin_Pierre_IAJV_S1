@@ -16,7 +16,9 @@ void ActionCreateVillager(World* myWorld) {
 	myWorld->SetBreadCount(myWorld->GetBreadCount() - 1);
 }
 
-
+<<<<<<< HEAD
+void InitStates() {
+=======
 void ActionCutWood(World* myWorld) {
     myWorld->SetWoodCount(myWorld->GetWoodCount() + 1);
 }
@@ -54,29 +56,32 @@ void ActionLookForEnemy(World* myWorld) {
 
 void InitStates() {
     // Villager state
+>>>>>>> dcd843f0cb176b613e68104d8f89e84c66ceac9c
 	States CreateVillager;
 
     Precondition prepVillager;
-    prepVillager.Condition = [](const World* w) -> bool {
+    prepVillager.Condition = [](World* w) -> bool {
         return w->GetBreadCount() > 0;
     };
     CreateVillager.AddPrecondition(&prepVillager);
 
 	CreateVillager.Action = ActionCreateVillager;
 
+<<<<<<< HEAD
 	Precondition prep;
 	prep.Condition = [](const World* w) -> bool { 
 		return w->GetBreadCount() > 0 ; 
 	};	
 
 	CreateVillager.AddPrecondition(&prep);
+=======
     CreateVillager.SetCost(1);
 
     // Wood state
     States CutWood;
 
     Precondition prepWood;
-    prepWood.Condition = [](const World* w) -> bool {
+    prepWood.Condition = [](World* w) -> bool {
         return w->GetVillagerCount() > 0;
     };
     CutWood.AddPrecondition(&prepWood);
@@ -89,7 +94,7 @@ void InitStates() {
     States MineIron;
 
     Precondition prepIron;
-    prepIron.Condition = [](const World* w) -> bool {
+    prepIron.Condition = [](World* w) -> bool {
         return w->GetVillagerCount() > 0;
     };
     MineIron.AddPrecondition(&prepIron);
@@ -97,12 +102,13 @@ void InitStates() {
     MineIron.Action = ActionMineIron;
 
     MineIron.SetCost(2);
-    
+>>>>>>> dcd843f0cb176b613e68104d8f89e84c66ceac9c
+
     // Gold state
     States MineGold;
 
     Precondition prepGold;
-    prepGold.Condition = [](const World* w) -> bool {
+    prepGold.Condition = [](World* w) -> bool {
         return w->GetVillagerCount() > 0;
     };
     MineGold.AddPrecondition(&prepGold);
@@ -115,7 +121,7 @@ void InitStates() {
     States CreateFarm;
 
     Precondition prepFarm;
-    prepFarm.Condition = [](const World* w) -> bool {
+    prepFarm.Condition = [](World* w) -> bool {
         return w->GetVillagerCount() > 0 && w->GetWoodCount() > 4;
     };
     CreateFarm.AddPrecondition(&prepFarm);
@@ -128,7 +134,7 @@ void InitStates() {
     States CreateBread;
 
     Precondition prepBread;
-    prepBread.Condition = [](const World* w) -> bool {
+    prepBread.Condition = [](World* w) -> bool {
         return w->GetVillagerCount() > 0 && w->GetFarmCount() > 0;
     };
     CreateBread.AddPrecondition(&prepBread);
@@ -141,7 +147,7 @@ void InitStates() {
     States CreateWarrior;
 
     Precondition prepWarrior;
-    prepWarrior.Condition = [](const World* w) -> bool {
+    prepWarrior.Condition = [](World* w) -> bool {
         return w->GetIronCount() > 0 && w->GetGoldCount() > 0 && w->GetBreadCount() > 0;
     };
     CreateWarrior.AddPrecondition(&prepWarrior);
@@ -154,7 +160,7 @@ void InitStates() {
     States AttackEnemy;
 
     Precondition prepAttack;
-    prepAttack.Condition = [](const World* w) -> bool {
+    prepAttack.Condition = [](World* w) -> bool {
         return w->GetEnemyFound() > 0 && w->GetWarriorCount() > 10;
     };
     AttackEnemy.AddPrecondition(&prepAttack);
@@ -167,7 +173,7 @@ void InitStates() {
     States LookForEnemy;
 
     Precondition prepLookForEnemy;
-    prepLookForEnemy.Condition = [](const World* w) -> bool {
+    prepLookForEnemy.Condition = [](World* w) -> bool {
         return w->GetWarriorCount() > 0 || w->GetVillagerCount() > 0;
     };
     LookForEnemy.AddPrecondition(&prepLookForEnemy);
@@ -181,12 +187,17 @@ int main()
 {
 	InitStates();
 	World world = World();
-
+<<<<<<< HEAD
 	std::cout << " Bread : " << world.GetBreadCount() << std::endl;
 	std::cout << " Villager : " << world.GetVillagerCount() << std::endl;
 	std::cout << " Warrior : " << world.GetWarriorCount() << std::endl;
 	std::cout << " Warrior : " << world.GetEnemyLivesCount() << std::endl;
 
 
+=======
+	std::cout << world.GetBreadCount() << " bread" << std::endl;
+	world.SetBreadCount(11);
+	std::cout << world.GetBreadCount() << " bread" << std::endl;
+>>>>>>> dcd843f0cb176b613e68104d8f89e84c66ceac9c
     return 0;
 }
