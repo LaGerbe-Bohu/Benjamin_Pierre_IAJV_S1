@@ -114,6 +114,8 @@ void InitStates() {
     };
     CreateFarm.AddPrecondition(&prepFarm);
 
+    CreateFarm.Action = ActionCreateFarm;
+
     CreateFarm.SetCost(2);
 
     // Bread state
@@ -124,6 +126,8 @@ void InitStates() {
         return w->GetVillagerCount() > 0 && w->GetFarmCount() > 0;
     };
     CreateBread.AddPrecondition(&prepBread);
+
+    CreateBread.Action = ActionCreateBread;
 
     CreateBread.SetCost(2);
 
@@ -136,6 +140,8 @@ void InitStates() {
     };
     CreateWarrior.AddPrecondition(&prepWarrior);
 
+    CreateWarrior.Action = ActionCreateWarrior;
+
     CreateWarrior.SetCost(5);
 
     // Attack state
@@ -143,12 +149,26 @@ void InitStates() {
 
     Precondition prepAttack;
     prepAttack.Condition = [](World* w) -> bool {
-        return w->GetIronCount() > 0 && w->GetGoldCount() > 0 && w->GetBreadCount() > 0;
+        return w->GetEnemyFound() > 0 && w->GetWarriorCount() > 10;
     };
     AttackEnemy.AddPrecondition(&prepAttack);
 
+    AttackEnemy.Action = ActionAttackEnemy;
+
     AttackEnemy.SetCost(10);
 
+    // LookForEnemy state
+    States LookForEnemy;
+
+    Precondition prepLookForEnemy;
+    prepLookForEnemy.Condition = [](World* w) -> bool {
+        return w->GetWarriorCount() > 0 || w->GetVillagerCount() > 0;
+    };
+    LookForEnemy.AddPrecondition(&prepLookForEnemy);
+
+    LookForEnemy.Action = ActionLookForEnemy;
+
+    LookForEnemy.SetCost(5);
 }
 
 int main()
