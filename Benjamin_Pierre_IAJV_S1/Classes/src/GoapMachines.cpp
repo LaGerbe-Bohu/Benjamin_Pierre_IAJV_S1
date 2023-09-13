@@ -6,7 +6,7 @@
 
 
 void Node::SimulatePath( World* myWorld) {
-	Node* idx = this;
+	/*Node* idx = this;
 	World* world = new World(myWorld);
 	idx->GetState()->Action(world);
 	idx = idx->GetPrev();
@@ -17,7 +17,7 @@ void Node::SimulatePath( World* myWorld) {
 		idx = idx->GetPrev();
 	}
 
-	this->currentWorld = world;
+	this->currentWorld = world;*/
 }
 
 
@@ -62,52 +62,90 @@ Node* GoapMachine::Execute( States* myRoot) {
 	World myWorld = world;
 	Node* currentNode = new Node(myRoot, new World(myWorld));
 	currentNode->SetPrev(nullptr);
-	currentNode->SetHeuristique(currentNode->PathNonMetPreconditions(currentNode->GetWorld()));
+	currentNode->SetHeuristique(currentNode->GetNonMetPrecondition().size());
 	openNode.push_back(currentNode);
-	currentNode->SetNonMetPrecondition(currentNode->GetState()->GetPreconditions());
 
 	for (int i = 0; i < openNode.size(); i++)
 	{
-		for (int j = 0; j < openNode.size(); j++)
-		{
-			if (openNode[j]->GetHeuristique() <= 0) {
-				currentNode = openNode[j];
-				return currentNode;
-			}
+		if (openNode[i]->GetHeuristique() <= 0) {
+			currentNode = openNode[j];
+			return currentNode;
 		}
-
+		
 		int idx = FindCorrectNode(openNode);
 		currentNode = openNode[idx];
 		openNode.erase(openNode.begin() + idx);
 
-		for (int j = 0; j < possibleStates.size(); j++)
+		States state = GetEffectMap[currentNode->GetState()->GetTypeState];
+
+
+		World* tmpWorld = new World(myWorld);
+		Node* tmpNode = new Node(possibleStates[j], new World(tmpWorld));
+		openNode.push_back(tmpNode);
+		tmpNode->SetPrev(currentNode);
+		tmpNode->GetState()->Action(tmpWorld);
+
+		std::vector<Precondition*> preconditions;
+		for (int i = 0; i < currentNode->GetNonMetPrecondition().size(); i++)
 		{
-			if (!currentNode->IsInThePath(possibleStates[j])) {
+			if (!currentNode->GetNonMetPrecondition()[i]->Condition(tmpWorld)) {
+				preconditions.push_back(currentNode->GetNonMetPrecondition()[i]);
 
-				World* tmpWorld = new World(myWorld);
-				Node* tmpNode = new Node(possibleStates[j], new World(tmpWorld));
-				openNode.push_back(tmpNode);
-				tmpNode->SetPrev(currentNode);
-				tmpNode->GetState()->Action(tmpWorld);
-
-				std::vector<Precondition*> preconditions;
-				for (int i = 0; i < currentNode->GetNonMetPrecondition().size(); i++)
-				{
-					if (!currentNode->GetNonMetPrecondition()[i]->Condition(tmpWorld)) {
-						preconditions.push_back(currentNode->GetNonMetPrecondition()[i]);
-						
-					}
-				}
-				for (int i = 0; i < tmpNode->GetState()->GetPreconditions().size(); i++)
-				{
-					preconditions.push_back(tmpNode->GetState()->GetPreconditions()[i]);
-				}
-
-				tmpNode->SetNonMetPrecondition(preconditions);
-				tmpNode->SetHeuristique(preconditions.size());
 			}
-			
 		}
+
+
+		tmpNode->SetNonMetPrecondition(preconditions);
+		tmpNode->SetHeuristique(preconditions.size());
+		
+
+
+	}
+
+
+
+	//for (int i = 0; i < openNode.size(); i++)
+	//{
+	//	for (int j = 0; j < openNode.size(); j++)
+	//	{
+	//		if (openNode[j]->GetHeuristique() <= 0) {
+	//			currentNode = openNode[j];
+	//			return currentNode;
+	//		}
+	//	}
+
+	//	int idx = FindCorrectNode(openNode);
+	//	currentNode = openNode[idx];
+	//	openNode.erase(openNode.begin() + idx);
+
+	//	for (int j = 0; j < possibleStates.size(); j++)
+	//	{
+	//		if (!currentNode->IsInThePath(possibleStates[j])) {
+
+	//			World* tmpWorld = new World(myWorld);
+	//			Node* tmpNode = new Node(possibleStates[j], new World(tmpWorld));
+	//			openNode.push_back(tmpNode);
+	//			tmpNode->SetPrev(currentNode);
+	//			tmpNode->GetState()->Action(tmpWorld);
+
+	//			std::vector<Precondition*> preconditions;
+	//			for (int i = 0; i < currentNode->GetNonMetPrecondition().size(); i++)
+	//			{
+	//				if (!currentNode->GetNonMetPrecondition()[i]->Condition(tmpWorld)) {
+	//					preconditions.push_back(currentNode->GetNonMetPrecondition()[i]);
+	//					
+	//				}
+	//			}
+	//			for (int i = 0; i < tmpNode->GetState()->GetPreconditions().size(); i++)
+	//			{
+	//				preconditions.push_back(tmpNode->GetState()->GetPreconditions()[i]);
+	//			}
+
+	//			tmpNode->SetNonMetPrecondition(preconditions);
+	//			tmpNode->SetHeuristique(preconditions.size());
+	//		}
+	//		
+	//	}
 
 
 		/*

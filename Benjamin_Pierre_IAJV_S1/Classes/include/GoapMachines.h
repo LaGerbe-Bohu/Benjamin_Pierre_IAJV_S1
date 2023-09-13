@@ -1,6 +1,7 @@
 #pragma once
+#include "../include/States.h"
 #include <vector>
-
+#include <unordered_map>
 class Precondition;
 class States;
 class World;
@@ -13,9 +14,13 @@ class Node {
 	std::vector<Precondition* > nonMetPrecondition;
 
 public:
-	Node(int myHeuristique,  States* myState,World* myWorld) :heuristique(myHeuristique), State(myState), currentWorld(myWorld) {};
-	Node( States* myState, World* myWorld) : State(myState), currentWorld(myWorld) {}
-	
+	Node(int myHeuristique, States* myState, World* myWorld) :heuristique(myHeuristique), State(myState), currentWorld(myWorld) {
+		this->nonMetPrecondition = myState->vecPreconditions;
+	}
+	Node(States* myState, World* myWorld) : State(myState), currentWorld(myWorld) {
+		this->nonMetPrecondition = myState->vecPreconditions;
+	}
+
 	~Node() {
 		delete currentWorld;
 		delete State;
@@ -53,6 +58,8 @@ public:
 		this->heuristique = i;
 	}
 
+
+
 	void AddHeuristique(int i) {
 		this->heuristique += i;
 	}
@@ -70,11 +77,16 @@ class GoapMachine {
 	std::vector<Precondition*> vecNotMet;
 	std::vector<States*> possibleStates;
 	World* world;
+	std::unordered_map<TypeState,std::vector<States>> EffectMap;
 
 	public :
 	GoapMachine(std::vector<States*> myPossibleStates,World* myWorld):possibleStates(myPossibleStates), world(myWorld) {};
 
 	Node* Execute(States* myRoot);
+
+	std::unordered_map<TypeState, std::vector<States>> GetEffectMap() {
+		return EffectMap;
+	}
 
 	void AddAllOptionsToOpenNode();
 

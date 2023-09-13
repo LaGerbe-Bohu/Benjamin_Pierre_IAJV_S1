@@ -60,8 +60,6 @@ void InitStates() {
 int main()
 {
 	//InitStates();
-
-
     
     #pragma region StatesInit
 
@@ -176,6 +174,13 @@ int main()
     world.SetWarriorCount(0);
     world.SetBreadCount(10);
     Node* idx = gp.Execute(&AttackEnemy);
+    
+    std::vector<States> tmp;
+    tmp.push_back(LookForEnemy);
+    tmp.push_back(CreateWarrior);
+    std::pair<TypeState, std::vector<States>> p(Attack, tmp);
+    tmp.clear();
+    gp.GetEffectMap().insert(p);
 
 	std::cout << " Bread : " << world.GetBreadCount() << std::endl;
 	std::cout << " Villager : " << world.GetVillagerCount() << std::endl;
@@ -184,6 +189,9 @@ int main()
 	std::cout << " Iron : " << world.GetIronCount() << std::endl;
 	std::cout << " Wood : " << world.GetWoodCount() << std::endl;
     std::cout << std::endl;
+
+
+
 
     while (idx != nullptr) {
         std::cout << idx->GetState()->GetLabel() << std::endl;
