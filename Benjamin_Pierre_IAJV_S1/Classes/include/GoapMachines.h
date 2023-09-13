@@ -38,7 +38,7 @@ public:
 	}
 
 	void SetNonMetPrecondition(std::vector<Precondition*> nonMet) {
-		nonMet = nonMetPrecondition;
+		nonMetPrecondition = nonMet;
 	}
 
 	bool IsInThePath(States* myNode);

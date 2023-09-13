@@ -1,12 +1,13 @@
 #include "../include/States.h"
 
+/*
 int States::NonMetPreconditions( const World* world) {
 	
 	int idx = 0;
 
 	for (int i = 0; i < vecPreconditions.size(); i++)
 	{
-		if (!vecPreconditions[i].Condition(world)) {
+		if (!vecPreconditions[i]->Condition(world)) {
 			idx++;
 		}
 			
@@ -14,3 +15,4 @@ int States::NonMetPreconditions( const World* world) {
 
 	return idx;
 }
+*/

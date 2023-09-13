@@ -61,85 +61,61 @@ int main()
 {
 	//InitStates();
 
-    // Villager state
+
     
     #pragma region StatesInit
-    States CreateVillager("Create a villager");
 
-    Precondition prepVillager;
-    prepVillager.Condition = [](const World* w) -> bool {
-        return w->GetBreadCount() > 0;
+    // Villager state --------------
+    States CreateVillager("Create a villager",Villager,1);
+    Precondition prepVillager(Villager,1);
+    prepVillager.Condition = [](const World* w,const Precondition* prep) -> bool {
+        return w->GetBreadCount() >= prep->getMultiplicateur();
     };
-    CreateVillager.AddPrecondition(&prepVillager);
 
-    CreateVillager.Action = ActionCreateVillager;
-
-    CreateVillager.SetCost(1);
-
-    // Wood state
-    States CutWood("Cut wood");
-
-    Precondition prepWood;
-    prepWood.Condition = [](const World* w) -> bool {
-        return w->GetVillagerCount() > 0;
+    // Wood state -------------------
+    States CutWood("Cut wood",Wood,2);
+    Precondition prepWood(Wood,1);
+    prepWood.Condition = [](const World* w,const Precondition* prep) -> bool {
+        return w->GetVillagerCount() >= prep->getMultiplicateur();
     };
-    CutWood.AddPrecondition(&prepWood);
 
-    CutWood.Action = ActionCutWood;
-
-    CutWood.SetCost(1);
-
-    // Iron state
-    States MineIron("Mine iron");
-
-    Precondition prepIron;
-    prepIron.Condition = [](const World* w) -> bool {
-        return w->GetVillagerCount() > 0;
+    // Iron state ---------------
+    States MineIron("Mine iron",Iron,2);
+    Precondition prepIron(Iron,1);
+    prepIron.Condition = [](const World* w,const Precondition* prep) -> bool {
+        return w->GetVillagerCount() > prep->getMultiplicateur();
     };
-    MineIron.AddPrecondition(&prepIron);
 
-    MineIron.Action = ActionMineIron;
-
-    MineIron.SetCost(2);
-
-    // Gold state
-    States MineGold("Mine Gold");
-
-    Precondition prepGold;
-    prepGold.Condition = [](const World* w) -> bool {
-        return w->GetVillagerCount() > 0;
+    // Gold state ---------------
+    States MineGold("Mine Gold",Gold,2);
+    Precondition prepGold(Gold,2);
+    prepGold.Condition = [](const World* w,const Precondition* prep) -> bool {
+        return w->GetVillagerCount() > prep->getMultiplicateur();
     };
-    MineGold.AddPrecondition(&prepGold);
-
-    MineGold.Action = ActionMineGold;
-
-    MineGold.SetCost(2);
-
-    // Farm state
-    States CreateFarm("Create Farm");
-
-    Precondition prepFarm;
-    prepFarm.Condition = [](const World* w) -> bool {
-        return w->GetVillagerCount() > 0 && w->GetWoodCount() > 5;
+    
+    // Farm state ---------------
+    States CreateFarm("Create Farm",Farm,3);
+    Precondition prepFarmWood(Farm, 1);
+    prepFarmWood.Condition = [](const World* w,const Precondition * prep) -> bool {
+        return w->GetVillagerCount() > prep->getMultiplicateur();
     };
-    CreateFarm.AddPrecondition(&prepFarm);
 
-    CreateFarm.Action = ActionCreateFarm;
-
-    CreateFarm.SetCost(2);
-
-    // Bread state
-    States CreateBread("Create Bread");
-
-    Precondition prepBread;
-    prepBread.Condition = [](const World* w) -> bool {
-        return w->GetVillagerCount() > 0 && w->GetFarmCount() > 0;
+    Precondition prepFarmWood(Farm, 5);
+    prepFarmWood.Condition = [](const World* w, const Precondition* prep) -> bool {
+        return w->GetWoodCount() > prep->getMultiplicateur();
     };
-    CreateBread.AddPrecondition(&prepBread);
 
-    CreateBread.Action = ActionCreateBread;
+    // Bread state --------------------
+    States CreateBread("Create Bread",Bread,2);
+    Precondition prepBreadVillager(Bread,1);
+    prepBreadVillager.Condition = [](const World* w,const Precondition* prep) -> bool {
+        return w->GetVillagerCount() >= prep->getMultiplicateur();
+    };
 
-    CreateBread.SetCost(2);
+    Precondition prepBreadFarm(Bread, 1);
+    prepBreadFarm.Condition = [](const World* w, const Precondition* prep) -> bool {
+        return  w->GetFarmCount() > prep->getMultiplicateur();
+    };
 
     // Warrior state
     States CreateWarrior("Create Warrior");

@@ -3,45 +3,23 @@
 #include "Precondition.h"
 class States {
     private:
-	unsigned int cost;
-	std::vector<Precondition> vecPreconditions;
+
+	int cost;
+    TypeState typeState;
     std::string label;
-    bool once;
+ 
     public:
 
-    States(std::string myLabel):label(myLabel),once(false) {
-        vecPreconditions = *(new std::vector<Precondition>);
-    }
-
-    ~States() {
-        vecPreconditions.clear();
-    }
+    States(std::string myLabel, TypeState myTypeStape,int myCost) :label(myLabel), typeState(myTypeStape), cost(myCost) {
+    };
 
     std::string GetLabel() {
         return label;
     }
 
-    void SetOnce() {
-        once = true;
-    }
-
-    bool GetOnce() {
-        return once;
-    }
-
-    std::vector<Precondition> GetPreconditions() {
-        return vecPreconditions;
-    }
-
-    void AddPrecondition(const Precondition* precondition) {
-        this->vecPreconditions.push_back(*precondition);
-    }
-
     unsigned int GetCost() const {
         return cost;
     }
-
-	int NonMetPreconditions(const World*);
 
 	// /*Fonction de précondition */
     void SetCost(unsigned int myCost) {

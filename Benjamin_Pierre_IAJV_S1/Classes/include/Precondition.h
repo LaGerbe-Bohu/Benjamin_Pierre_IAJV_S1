@@ -4,15 +4,29 @@
 
 class World;
 
+enum TypeState {
+	Wood,
+	Villager,
+	Iron,
+	Gold,
+	Warrior,
+	Farm,
+	Bread,
+	Attack,
+	Look
+};
+
 class Precondition
 {
-	std::string label;
+	TypeState state;
 	int multiplicateur;
+
 	public :
-	
-	std::string GetLabel()const {
-		return label;
+	Precondition(TypeState myTypeState, int myMultiplicateur) :state(myTypeState), multiplicateur(myMultiplicateur) {};
+
+	int getMultiplicateur() const {
+		return multiplicateur;
 	}
 
-	bool(*Condition)(const World* world);
+	bool(*Condition)(const World* world,const Precondition* prep );
 };
