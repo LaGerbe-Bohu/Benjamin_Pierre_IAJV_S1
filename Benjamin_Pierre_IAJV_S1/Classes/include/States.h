@@ -12,6 +12,7 @@ class States {
     public:
         States() {
             vecPreconditions = *(new std::vector<Precondition>);
+            cost = 0;
         }
 
         ~States() {
@@ -30,6 +31,6 @@ class States {
             cost = myCost;
         }
 
-    void ( *Action )( World* world){};  // Function pointer to the action
+        void ( *Action )( World* world){};  // Function pointer to the action
         // /*Fonction de precondition */
 };

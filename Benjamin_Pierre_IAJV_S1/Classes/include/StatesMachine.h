@@ -5,9 +5,6 @@ class States {};
 class Precondition {};
 
 class StatesMachine {
-	
 	std::vector<States*> openNode;
 	std::vector<Precondition*> vecNotMet;
-
-
 };

@@ -6,12 +6,13 @@ class World;
 
 class Precondition
 {
-	std::string label;
-	public :
-	
-	std::string GetLabel()const {
-		return label;
-	}
+    private:
+        std::string label;
 
-	bool(*Condition)( World* world);
+    public :
+        std::string GetLabel() const {
+            return label;
+        }
+
+	bool(*Condition)(World* world);
 };

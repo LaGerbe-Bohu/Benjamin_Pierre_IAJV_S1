@@ -1,55 +1,55 @@
-﻿// Benjamin_Pierre_IAJV_S1.cpp : Defines the entry point for the application.
-//
-
-#include <iostream>
+﻿#include <iostream>
 
 #include "../include/States.h"
-#include "../include/Precondition.h"
 #include "../include/World.h"
-
-
-void ActionCutWood() {
-	std::cout << "Cutting wood." << std::endl;
-}
 
 void ActionCreateVillager(World* myWorld) {
 	myWorld->SetVillagerCount(myWorld->GetVillagerCount() + 1);
 	myWorld->SetBreadCount(myWorld->GetBreadCount() - 1);
+    std::cout << "Villager created." << std::endl;
 }
 
 void ActionCutWood(World* myWorld) {
     myWorld->SetWoodCount(myWorld->GetWoodCount() + 1);
+    std::cout << "Cutting wood." << std::endl;
 }
 
 void ActionMineIron(World* myWorld) {
     myWorld->SetIronCount(myWorld->GetIronCount() + 1);
+    std::cout << "Mining iron." << std::endl;
 }
 
 void ActionMineGold(World* myWorld) {
     myWorld->SetGoldCount(myWorld->GetGoldCount() + 1);
+    std::cout << "Mining gold." << std::endl;
 }
 
 void ActionCreateFarm(World* myWorld) {
     myWorld->SetFarmCount(myWorld->GetFarmCount() + 1);
+    std::cout << "Farm created." << std::endl;
 }
 
 void ActionCreateBread(World* myWorld) {
     myWorld->SetBreadCount(myWorld->GetBreadCount() + 1);
+    std::cout << "Bread created." << std::endl;
 }
 
 void ActionCreateWarrior(World* myWorld) {
     myWorld->SetWarriorCount(myWorld->GetWarriorCount() + 1);
     myWorld->SetWoodCount(myWorld->GetWoodCount() - 5);
+    std::cout << "Warrior created." << std::endl;
 }
 
 void ActionAttackEnemy(World* myWorld) {
     myWorld->SetEnemyLivesCount(myWorld->GetEnemyLivesCount() - 10);
     myWorld->SetWarriorCount(myWorld->GetWarriorCount() - 10);
     myWorld->SetEnemyFound(false);
+    std::cout << "Enemy attacked." << std::endl;
 }
 
 void ActionLookForEnemy(World* myWorld) {
     myWorld->SetEnemyFound(true);
+    std::cout << "Enemy spotted!" << std::endl;
 }
 
 void InitStates() {
