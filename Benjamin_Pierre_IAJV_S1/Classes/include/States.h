@@ -34,7 +34,7 @@ class States {
 
     std::vector<Precondition*> vecPreconditions;
 
-	// /*Fonction de précondition */
+	// /*Fonction de prï¿½condition */
     void SetCost(unsigned int myCost) {
         cost = myCost;
     }

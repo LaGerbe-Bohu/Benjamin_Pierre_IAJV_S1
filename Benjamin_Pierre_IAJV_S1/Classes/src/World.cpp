@@ -1,7 +1,3 @@
-//
-// Created by pierr on 11-Sep-23.
-//
-
 #include "../include/World.h"
 
 World::World(unsigned int myVillagerCount, unsigned int myWarriorCount, unsigned int myEnemyLivesCount,

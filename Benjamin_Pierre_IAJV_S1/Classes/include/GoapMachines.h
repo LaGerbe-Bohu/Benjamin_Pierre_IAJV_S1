@@ -72,7 +72,7 @@ public:
 };
 
 class GoapMachine {
-	
+
 	std::vector<Node*> openNode;
 	std::vector<Precondition*> vecNotMet;
 	std::vector<States*> possibleStates;

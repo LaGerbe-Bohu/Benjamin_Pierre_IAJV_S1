@@ -1,33 +1,24 @@
-﻿// Benjamin_Pierre_IAJV_S1.cpp : Defines the entry point for the application.
-//
-
-#include <iostream>
+﻿#include <iostream>
 
 #include "../include/States.h"
-#include "../include/Precondition.h"
 #include "../include/World.h"
 #include "../include/GoapMachines.h"
 
-void ActionCutWood() {
-	std::cout << "Cutting wood." << std::endl;
-}
-
 void ActionCreateVillager(World* myWorld) {
-	myWorld->SetVillagerCount(myWorld->GetVillagerCount() + 10);
-	myWorld->SetBreadCount(myWorld->GetBreadCount() - 10);
+	myWorld->SetVillagerCount(myWorld->GetVillagerCount() + 1);
+	myWorld->SetBreadCount(myWorld->GetBreadCount() - 1);
 }
-
 
 void ActionCutWood(World* myWorld) {
     myWorld->SetWoodCount(myWorld->GetWoodCount() + 1);
 }
 
 void ActionMineIron(World* myWorld) {
-    myWorld->SetIronCount(myWorld->GetIronCount() + 10);
+    myWorld->SetIronCount(myWorld->GetIronCount() + 1);
 }
 
 void ActionMineGold(World* myWorld) {
-    myWorld->SetGoldCount(myWorld->GetGoldCount() + 10);
+    myWorld->SetGoldCount(myWorld->GetGoldCount() + 1);
 }
 
 void ActionCreateFarm(World* myWorld) {
@@ -64,7 +55,7 @@ int main()
     #pragma region StatesInit
 
     // Villager state --------------
-    States CreateVillager("Create a villager",Villager,1);
+    States CreateVillager("Villager created.",Villager,1);
     Precondition prepVillager(Villager,1);
     prepVillager.Condition = [](const World* w,const Precondition* prep) -> bool {
         return w->GetBreadCount() >= prep->getMultiplicateur();
