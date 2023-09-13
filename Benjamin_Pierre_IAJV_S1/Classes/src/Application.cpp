@@ -172,11 +172,11 @@ int main()
     world.SetBreadCount(10);
     Node* idx = gp.Execute(&AttackEnemy);
 
-    std::vector<States> tmp;
-    tmp.push_back(LookForEnemy);
-    tmp.push_back(CreateWarrior);
-    std::pair<TypeState, std::vector<States>> p(Attack, tmp);
-    tmp.clear();
+    std::vector<States*> tmp;
+    tmp.push_back(&LookForEnemy);
+    tmp.push_back(&CreateWarrior);
+    std::pair<TypeState, std::vector<States*>> p(Attack,tmp);
+    tmp = std::vector<States*>();
     gp.GetEffectMap().insert(p);
 
 	std::cout << " Bread : " << world.GetBreadCount() << std::endl;
