@@ -9,7 +9,9 @@ class States {
         bool once;
 
     public:
-        States(std::string myLabel):label(myLabel),once(false) {
+        States(const std::string& myLabel) {
+            label = myLabel;
+            once = false;
             vecPreconditions = *(new std::vector<Precondition>);
             cost = 0;
         }
@@ -18,7 +20,7 @@ class States {
             vecPreconditions.clear();
         }
 
-        std::string GetLabel() {
+        std::string GetLabel() const {
             return label;
         }
 
@@ -26,7 +28,7 @@ class States {
             once = true;
         }
 
-        bool GetOnce() {
+        bool GetOnce() const {
             return once;
         }
 
@@ -38,13 +40,13 @@ class States {
             return cost;
         }
 
-	int NonMetPreconditions(const World*);
+        int NonMetPreconditions(const World*);
 
-	// /*Fonction de precondition */
-    void SetCost(unsigned int myCost) {
-        cost = myCost;
-    }
+        // /*Fonction de precondition */
+        void SetCost(unsigned int myCost) {
+            cost = myCost;
+        }
 
-    void ( *Action )( World* world){};  // Function pointer to the action
-    // /*Fonction de precondition */
+        void ( *Action )(World* world){};  // Function pointer to the action
+        // /*Fonction de precondition */
 };

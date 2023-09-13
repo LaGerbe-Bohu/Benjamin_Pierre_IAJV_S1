@@ -31,13 +31,11 @@ class World {
             this->farmCount = myWorld->farmCount;
             this->villagerCount = myWorld->villagerCount;
             this->warriorCount = myWorld->warriorCount;
-            this->enemyLivesCount = myWorld->enemyLivesCount;
             this->enemyFound = myWorld->enemyFound;
             this->goldCount = myWorld->goldCount;
+            this->woodCount = myWorld->woodCount;
             this->ironCount = myWorld->ironCount;
-        
         }
-
 
         World& operator=(const World* myWorld) {
             this->breadCount = myWorld->breadCount;
@@ -49,7 +47,6 @@ class World {
             this->enemyFound = myWorld->enemyFound;
             this->goldCount = myWorld->goldCount;
             this->ironCount = myWorld->ironCount;
-
             return *this;
         }
 
