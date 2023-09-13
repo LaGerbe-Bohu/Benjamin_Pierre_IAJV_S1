@@ -1,25 +1,8 @@
 #include "../include/GoapMachines.h"
-#include "../include/States.h"
 #include "../include/World.h"
 #include <limits>
 #include <cassert>
-
-
-void Node::SimulatePath( World* myWorld) {
-	/*Node* idx = this;
-	World* world = new World(myWorld);
-	idx->GetState()->Action(world);
-	idx = idx->GetPrev();
-	while (idx != nullptr) {
-		if (idx->GetState()->NonMetPreconditions(world) <= 0) {
-			idx->GetState()->Action(world);
-		}
-		idx = idx->GetPrev();
-	}
-
-	this->currentWorld = world;*/
-}
-
+#include "../include/Node.h"
 
 int FindCorrectNode(std::vector<Node*> myOpenNode) {
 
@@ -45,19 +28,17 @@ int FindCorrectNode(std::vector<Node*> myOpenNode) {
 	}
 
 
-	for (int i = 0; i < possibleNode.size(); i++)
+	for (int i : possibleNode)
 	{
-		if (myOpenNode[possibleNode[i]]->GetState()->GetCost() < cost) {
-			idx = possibleNode[i];
-			cost = myOpenNode[possibleNode[i]]->GetState()->GetCost();
+		if (myOpenNode[i]->GetState()->GetCost() < cost) {
+			idx = i;
+			cost = myOpenNode[i]->GetState()->GetCost();
 		}
 	}
-
 	return idx;
 }
 
-
-Node* GoapMachine::Execute( States* myRoot) {
+Node* GoapMachine::Execute(States* myRoot) {
 
 	World myWorld = world;
 	Node* currentNode = new Node(myRoot, new World(myWorld));
@@ -71,73 +52,32 @@ Node* GoapMachine::Execute( States* myRoot) {
 			currentNode = openNode[i];
 			return currentNode;
 		}
-		
+
 		int idx = FindCorrectNode(openNode);
 		currentNode = openNode[idx];
 		openNode.erase(openNode.begin() + idx);
 
 		std::vector<States*> state = GetEffectMap()[currentNode->GetState()->GetTypeState()];
-		
-	
-		for (int j = 0; j < state.size(); j++)
+
+
+		for (auto & j : state)
 		{
-			Node n(state[j], new World(currentNode->GetWorld()));
+			Node n(j, new World(currentNode->GetWorld()));
 			n.GetState()->Action(n.GetWorld());
 			n.SetPrev(currentNode);
-			
-			for (int k = 0; k < currentNode->GetState()->vecPreconditions.size(); k++)
+
+			for (auto prep : currentNode->GetState()->GetPreconditions())
 			{
-				Precondition* prep = currentNode->GetState()->vecPreconditions[k];
-				if (!prep->Condition(n.GetWorld(),prep)) {
+					if (!prep->Condition(n.GetWorld(),prep)) {
 					n.GetNonMetPrecondition().push_back(prep);
 				}
 			}
 			n.SetHeuristique(n.GetNonMetPrecondition().size());
 		}
-		
 	}
-
 	return currentNode;
 }
 
-	
-
-
 void GoapMachine::AddAllOptionsToOpenNode() {
-	
-	
+
 }
-
-bool Node::IsInThePath(States* myState) {
-	bool find = false;
-	Node* idx = this;
-
-	while (idx != nullptr && !find ) {
-		if (idx->GetState() == myState) {
-			find = true;
-		}
-		else {
-			idx = idx->GetPrev();
-		}
-	}
-
-	return find;
-}
-
-
-
-int Node::PathNonMetPreconditions(const World* world) {
-/*
-	int myNbResult = 0;
-	Node *idx = this;
-	while (idx != nullptr) {
-	
-		myNbResult += idx->GetState()->NonMetPreconditions(world);
-		idx = idx->prev;
-	}
-	
-	return myNbResult;
-	*/
-	return 0;
-}
-

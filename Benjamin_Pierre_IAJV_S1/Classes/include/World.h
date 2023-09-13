@@ -25,6 +25,7 @@ class World {
               int myGoldCount = 0, int myWoodCount = 0, int myFarmCount = 0,
               bool myEnemyFound = false);
 
+        // Copy constructor
         World(World* myWorld) {
             this->breadCount = myWorld->breadCount;
             this->enemyLivesCount = myWorld->enemyLivesCount;

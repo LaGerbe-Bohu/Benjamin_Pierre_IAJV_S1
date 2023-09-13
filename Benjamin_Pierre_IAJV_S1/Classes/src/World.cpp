@@ -1,5 +1,6 @@
 #include "../include/World.h"
 
+// Default constructor
 World::World(int myVillagerCount, int myWarriorCount, int myEnemyLivesCount,
              int myBreadCount, int myIronCount, int myGoldCount,
              int myWoodCount, int myFarmCount, bool myEnemyFound) {
@@ -14,6 +15,7 @@ World::World(int myVillagerCount, int myWarriorCount, int myEnemyLivesCount,
     enemyFound = myEnemyFound;
 }
 
+// Getters
 int World::GetVillagerCount() const {
     return villagerCount;
 }
@@ -50,6 +52,7 @@ bool World::GetEnemyFound() const {
     return enemyFound;
 }
 
+// Setters
 void World::SetVillagerCount(int myVillagerCount) {
     villagerCount = myVillagerCount;
 }

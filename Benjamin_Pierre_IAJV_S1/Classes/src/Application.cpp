@@ -3,6 +3,9 @@
 #include "../include/States.h"
 #include "../include/World.h"
 #include "../include/GoapMachines.h"
+#include "../include/Node.h"
+
+// Actions that can be used by the GOAP
 
 void ActionCreateVillager(World* myWorld) {
 	myWorld->SetVillagerCount(myWorld->GetVillagerCount() + 1);
@@ -44,14 +47,8 @@ void ActionLookForEnemy(World* myWorld) {
     myWorld->SetEnemyFound(true);
 }
 
-void InitStates() {
-
-}
-
 int main()
 {
-	//InitStates();
-
     #pragma region StatesInit
 
     // Villager state --------------

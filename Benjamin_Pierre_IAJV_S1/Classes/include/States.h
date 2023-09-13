@@ -10,8 +10,7 @@ class States {
         std::vector<Precondition*> VecPreconditions;
 
     public:
-        States(const std::string& myLabel, TypeState myTypeStape,int myCost) :label(myLabel), typeState(myTypeStape), cost(myCost) {
-        };
+        States(const std::string& myLabel, TypeState myTypeStape, int myCost) :label(myLabel), typeState(myTypeStape), cost(myCost) {};
 
         ~States() {
             VecPreconditions.clear();
@@ -19,6 +18,10 @@ class States {
 
         std::string GetLabel() const {
             return label;
+        }
+
+        std::vector<Precondition*> GetPreconditions() const {
+            return VecPreconditions;
         }
 
         TypeState GetTypeState() const {
@@ -29,13 +32,11 @@ class States {
             return cost;
         }
 
-        std::vector<Precondition*> vecPreconditions;
-
         // /*Fonction de precondition */
         void SetCost(int myCost) {
             cost = myCost;
         }
 
-        void ( *Action )( World* world){};  // Function pointer to the action
+        void ( *Action )(World* world){};  // Function pointer to the action
             // /*Fonction de precondition */
 };
