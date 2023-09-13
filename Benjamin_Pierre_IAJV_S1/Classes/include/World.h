@@ -4,25 +4,25 @@
 class World {
     private:
         // Living things
-        unsigned int villagerCount;
-        unsigned int warriorCount;
-        unsigned int enemyLivesCount;
+        int villagerCount;
+        int warriorCount;
+        int enemyLivesCount;
         bool enemyFound;
 
         // Ressources
-         int breadCount;
-         int ironCount;
-         int goldCount;
-         int woodCount;
+        int breadCount;
+        int ironCount;
+        int goldCount;
+        int woodCount;
 
         // Buildings
-        unsigned int farmCount;
+        int farmCount;
 
     public:
         // Default constructor
-        explicit World(unsigned int myVillagerCount = 0, unsigned int myWarriorCount = 0,
-              unsigned int myEnemyLivesCount = 10, unsigned int myBreadCount = 0, unsigned int myIronCount = 0,
-              unsigned int myGoldCount = 0, unsigned int myWoodCount = 0, unsigned int myFarmCount = 0,
+        explicit World(int myVillagerCount = 0, int myWarriorCount = 0,
+              int myEnemyLivesCount = 10, int myBreadCount = 0, int myIronCount = 0,
+              int myGoldCount = 0, int myWoodCount = 0, int myFarmCount = 0,
               bool myEnemyFound = false);
 
         World(World* myWorld) {
@@ -51,25 +51,25 @@ class World {
         }
 
         // Getters
-         int GetVillagerCount() const;
-         int GetWarriorCount() const;
-         int GetEnemyLivesCount() const;
+        int GetVillagerCount() const;
+        int GetWarriorCount() const;
+        int GetEnemyLivesCount() const;
         int GetBreadCount() const;
         int GetIronCount() const;
         int GetGoldCount() const;
         int GetWoodCount() const;
-        unsigned int GetFarmCount() const;
+        int GetFarmCount() const;
         bool GetEnemyFound() const;
 
         // Setters
-        void SetVillagerCount(unsigned int villagerCount);
-        void SetWarriorCount(unsigned int warriorCount);
-        void SetEnemyLivesCount(unsigned int enemyLivesCount);
-        void SetBreadCount(unsigned int breadCount);
-        void SetIronCount(unsigned int myIronCount);
-        void SetGoldCount(unsigned int myGoldCount);
-        void SetWoodCount(unsigned int myWoodCount);
-        void SetFarmCount(unsigned int myFarmCount);
+        void SetVillagerCount(int villagerCount);
+        void SetWarriorCount(int warriorCount);
+        void SetEnemyLivesCount(int enemyLivesCount);
+        void SetBreadCount(int breadCount);
+        void SetIronCount(int myIronCount);
+        void SetGoldCount(int myGoldCount);
+        void SetWoodCount(int myWoodCount);
+        void SetFarmCount(int myFarmCount);
         void SetEnemyFound(bool myEnemyFound);
 };
 

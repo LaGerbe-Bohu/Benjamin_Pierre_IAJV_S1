@@ -7,14 +7,15 @@ class States;
 class World;
 
 class Node {
-	int heuristique;
-	World* currentWorld;
-	States* State;
-	Node* prev;
-	std::vector<Precondition* > nonMetPrecondition;
+    private:
+        int heuristic;
+        World* currentWorld;
+        States* State;
+        Node* prev;
+        std::vector<Precondition* > nonMetPrecondition;
 
 public:
-	Node(int myHeuristique, States* myState, World* myWorld) :heuristique(myHeuristique), State(myState), currentWorld(myWorld) {
+	Node(int myHeuristic, States* myState, World* myWorld) : heuristic(myHeuristic), State(myState), currentWorld(myWorld) {
 		this->nonMetPrecondition = myState->vecPreconditions;
 	}
 	Node(States* myState, World* myWorld) : State(myState), currentWorld(myWorld) {
@@ -26,7 +27,7 @@ public:
 		delete State;
 	}
 
-	World* GetWorld() {
+	World* GetWorld() const {
 		return this->currentWorld;
 	};
 
@@ -34,11 +35,11 @@ public:
 		this->prev = myNode;
 	}
 
-	States* GetState() {
+	States* GetState() const {
 		return this->State;
 	}
 
-	std::vector<Precondition*> GetNonMetPrecondition() {
+	std::vector<Precondition*> GetNonMetPrecondition() const {
 		return nonMetPrecondition;
 	}
 
@@ -55,39 +56,36 @@ public:
 	}
 
 	void SetHeuristique(int i) {
-		this->heuristique = i;
+		this->heuristic = i;
 	}
-
-
 
 	void AddHeuristique(int i) {
-		this->heuristique += i;
+		this->heuristic += i;
 	}
 
-	int GetHeuristique() {
-		return this->heuristique;
+	int GetHeuristique() const {
+		return this->heuristic;
 	}
 
 	int PathNonMetPreconditions(const World* world);
 };
 
 class GoapMachine {
-
-	std::vector<Node*> openNode;
-	std::vector<Precondition*> vecNotMet;
-	std::vector<States*> possibleStates;
-	World* world;
-	std::unordered_map<TypeState,std::vector<States*>> EffectMap;
+    private:
+        std::vector<Node*> openNode;
+        std::vector<Precondition*> vecNotMet;
+        std::vector<States*> possibleStates;
+        World* world;
+        std::unordered_map<TypeState,std::vector<States*>> EffectMap;
 
 	public :
-	GoapMachine(std::vector<States*> myPossibleStates,World* myWorld):possibleStates(myPossibleStates), world(myWorld) {};
+        GoapMachine(std::vector<States*> myPossibleStates,World* myWorld):possibleStates(myPossibleStates), world(myWorld) {};
 
-	Node* Execute(States* myRoot);
+        Node* Execute(States* myRoot);
 
-	std::unordered_map<TypeState, std::vector<States*>> GetEffectMap() {
-		return EffectMap;
-	}
+        std::unordered_map<TypeState, std::vector<States*>> GetEffectMap() {
+            return EffectMap;
+        }
 
-	void AddAllOptionsToOpenNode();
-
+        void AddAllOptionsToOpenNode();
 };

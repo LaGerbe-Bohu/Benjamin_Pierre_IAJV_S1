@@ -4,41 +4,38 @@
 
 class States {
     private:
-
-	int cost;
-    TypeState typeState;
-    std::string label;
-    std::vector<Precondition*> VecPreconditions;
+        int cost;
+        TypeState typeState;
+        std::string label;
+        std::vector<Precondition*> VecPreconditions;
 
     public:
+        States(const std::string& myLabel, TypeState myTypeStape,int myCost) :label(myLabel), typeState(myTypeStape), cost(myCost) {
+        };
 
-    States(std::string myLabel, TypeState myTypeStape,int myCost) :label(myLabel), typeState(myTypeStape), cost(myCost) {
-    };
+        ~States() {
+            VecPreconditions.clear();
+        }
 
-    ~States() {
-        VecPreconditions.clear();
-    }
+        std::string GetLabel() const {
+            return label;
+        }
 
+        TypeState GetTypeState() const {
+            return typeState;
+        }
 
-    std::string GetLabel() {
-        return label;
-    }
+        unsigned int GetCost() const {
+            return cost;
+        }
 
-    TypeState GetTypeState() {
-        return typeState;
-    }
+        std::vector<Precondition*> vecPreconditions;
 
-    unsigned int GetCost() const {
-        return cost;
-    }
-
-    std::vector<Precondition*> vecPreconditions;
-
-	// /*Fonction de pr�condition */
-    void SetCost(unsigned int myCost) {
-        cost = myCost;
-    }
-
-    void ( *Action )( World* world){};  // Function pointer to the action
         // /*Fonction de precondition */
+        void SetCost(int myCost) {
+            cost = myCost;
+        }
+
+        void ( *Action )( World* world){};  // Function pointer to the action
+            // /*Fonction de precondition */
 };

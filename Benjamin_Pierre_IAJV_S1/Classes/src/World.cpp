@@ -1,8 +1,8 @@
 #include "../include/World.h"
 
-World::World(unsigned int myVillagerCount, unsigned int myWarriorCount, unsigned int myEnemyLivesCount,
-             unsigned int myBreadCount, unsigned int myIronCount, unsigned int myGoldCount,
-             unsigned int myWoodCount, unsigned int myFarmCount, bool myEnemyFound) {
+World::World(int myVillagerCount, int myWarriorCount, int myEnemyLivesCount,
+             int myBreadCount, int myIronCount, int myGoldCount,
+             int myWoodCount, int myFarmCount, bool myEnemyFound) {
     villagerCount = myVillagerCount;
     warriorCount = myWarriorCount;
     enemyLivesCount = myEnemyLivesCount;
@@ -42,7 +42,7 @@ int World::GetVillagerCount() const {
     return woodCount;
 }
 
-unsigned int World::GetFarmCount() const {
+int World::GetFarmCount() const {
     return farmCount;
 }
 
@@ -50,35 +50,35 @@ bool World::GetEnemyFound() const {
     return enemyFound;
 }
 
-void World::SetVillagerCount(unsigned int myVillagerCount) {
+void World::SetVillagerCount(int myVillagerCount) {
     villagerCount = myVillagerCount;
 }
 
-void World::SetWarriorCount(unsigned int myWarriorCount) {
+void World::SetWarriorCount(int myWarriorCount) {
     warriorCount = myWarriorCount;
 }
 
-void World::SetEnemyLivesCount(unsigned int myEnemyLivesCount) {
+void World::SetEnemyLivesCount(int myEnemyLivesCount) {
     enemyLivesCount = myEnemyLivesCount;
 }
 
-void World::SetBreadCount(unsigned int myBreadCount) {
+void World::SetBreadCount(int myBreadCount) {
     breadCount = myBreadCount;
 }
 
-void World::SetIronCount(unsigned int myIronCount) {
+void World::SetIronCount(int myIronCount) {
     ironCount = myIronCount;
 }
 
-void World::SetGoldCount(unsigned int myGoldCount) {
+void World::SetGoldCount(int myGoldCount) {
     goldCount = myGoldCount;
 }
 
-void World::SetWoodCount(unsigned int myWoodCount) {
+void World::SetWoodCount(int myWoodCount) {
     woodCount = myWoodCount;
 }
 
-void World::SetFarmCount(unsigned int myFarmCount) {
+void World::SetFarmCount(int myFarmCount) {
     farmCount = myFarmCount;
 }
 

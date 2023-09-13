@@ -18,15 +18,16 @@ enum TypeState {
 
 class Precondition
 {
-	TypeState state;
-	int multiplicateur;
+    private:
+        TypeState state;
+        int multiplicateur;
 
 	public :
-	Precondition(TypeState myTypeState, int myMultiplicateur) :state(myTypeState), multiplicateur(myMultiplicateur) {};
+        Precondition(TypeState myTypeState, int myMultiplicateur) :state(myTypeState), multiplicateur(myMultiplicateur) {};
 
-	int getMultiplicateur() const {
-		return multiplicateur;
-	}
+        int getMultiplicateur() const {
+            return multiplicateur;
+        }
 
-	bool(*Condition)(const World* world,const Precondition* prep );
+        bool(*Condition)(const World* world,const Precondition* prep );
 };

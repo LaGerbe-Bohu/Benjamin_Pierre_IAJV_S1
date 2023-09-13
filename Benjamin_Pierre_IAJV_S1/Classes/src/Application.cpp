@@ -172,12 +172,77 @@ int main()
     world.SetBreadCount(10);
     Node* idx = gp.Execute(&AttackEnemy);
 
-    std::vector<States*> tmp;
-    tmp.push_back(&LookForEnemy);
-    tmp.push_back(&CreateWarrior);
-    std::pair<TypeState, std::vector<States*>> p(Attack,tmp);
-    tmp = std::vector<States*>();
-    gp.GetEffectMap().insert(p);
+    std::vector<States*> createVillagerS;
+    createVillagerS.push_back(&CreateBread);
+    std::pair<TypeState, std::vector<States*>> pV(Villager,createVillagerS);
+    createVillagerS = std::vector<States*>();
+    gp.GetEffectMap().insert(pV);
+
+    std::vector<States*> cutWoodS;
+    cutWoodS.push_back(&CreateVillager);
+    std::pair<TypeState, std::vector<States*>> pW(Wood,cutWoodS);
+    cutWoodS = std::vector<States*>();
+    gp.GetEffectMap().insert(pW);
+
+    std::vector<States*> mineIronS;
+    mineIronS.push_back(&CreateVillager);
+    std::pair<TypeState, std::vector<States*>> pI(Iron,mineIronS);
+    mineIronS = std::vector<States*>();
+    gp.GetEffectMap().insert(pI);
+
+    std::vector<States*> mineGoldS;
+    mineGoldS.push_back(&CreateVillager);
+    std::pair<TypeState, std::vector<States*>> pG(Gold,mineGoldS);
+    mineGoldS = std::vector<States*>();
+    gp.GetEffectMap().insert(pG);
+
+    std::vector<States*> createFarmS;
+    createFarmS.push_back(&CreateVillager);
+    createFarmS.push_back(&CutWood);
+    createFarmS.push_back(&CutWood);
+    createFarmS.push_back(&CutWood);
+    createFarmS.push_back(&CutWood);
+    createFarmS.push_back(&CutWood);
+    std::pair<TypeState, std::vector<States*>> pF(Farm,createFarmS);
+    createFarmS = std::vector<States*>();
+    gp.GetEffectMap().insert(pF);
+
+    std::vector<States*> createBreadS;
+    createBreadS.push_back(&CreateFarm);
+    createBreadS.push_back(&CreateVillager);
+    std::pair<TypeState, std::vector<States*>> pB(Bread,createBreadS);
+    createBreadS = std::vector<States*>();
+    gp.GetEffectMap().insert(pB);
+
+    std::vector<States*> createWarriorS;
+    createWarriorS.push_back(&MineIron);
+    createWarriorS.push_back(&MineGold);
+    createWarriorS.push_back(&CreateBread);
+    std::pair<TypeState, std::vector<States*>> pWa(Warrior,createWarriorS);
+    createWarriorS = std::vector<States*>();
+    gp.GetEffectMap().insert(pWa);
+
+    std::vector<States*> attackEnemyS;
+    attackEnemyS.push_back(&LookForEnemy);
+    attackEnemyS.push_back(&CreateWarrior);
+    attackEnemyS.push_back(&CreateWarrior);
+    attackEnemyS.push_back(&CreateWarrior);
+    attackEnemyS.push_back(&CreateWarrior);
+    attackEnemyS.push_back(&CreateWarrior);
+    attackEnemyS.push_back(&CreateWarrior);
+    attackEnemyS.push_back(&CreateWarrior);
+    attackEnemyS.push_back(&CreateWarrior);
+    attackEnemyS.push_back(&CreateWarrior);
+    attackEnemyS.push_back(&CreateWarrior);
+    std::pair<TypeState, std::vector<States*>> pA(Attack,attackEnemyS);
+    attackEnemyS = std::vector<States*>();
+    gp.GetEffectMap().insert(pA);
+
+    std::vector<States*> lookForEnemyS;
+    lookForEnemyS.push_back(&CreateVillager);
+    std::pair<TypeState, std::vector<States*>> pL(Bread,lookForEnemyS);
+    lookForEnemyS = std::vector<States*>();
+    gp.GetEffectMap().insert(pL);
 
 	std::cout << " Bread : " << world.GetBreadCount() << std::endl;
 	std::cout << " Villager : " << world.GetVillagerCount() << std::endl;
