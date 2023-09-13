@@ -127,15 +127,15 @@ int main()
 
     // Warrior state --------------------
     States CreateWarrior("Create Warrior", Warrior, 5);
-    Precondition prepWarriorIron(Iron, 1);
+    Precondition prepWarriorIron(Warrior, 1);
     prepWarriorIron.Condition = [](const World* w,const Precondition* prep) -> bool {
         return w->GetIronCount() >= prep->getMultiplicateur();
     };
-    Precondition prepWarriorGold(Gold, 1);
+    Precondition prepWarriorGold(Warrior, 1);
     prepWarriorGold.Condition = [](const World* w,const Precondition* prep) -> bool {
         return w->GetGoldCount() >= prep->getMultiplicateur();
     };
-    Precondition prepWarriorBread(Bread, 1);
+    Precondition prepWarriorBread(Warrior, 1);
     prepWarriorBread.Condition = [](const World* w,const Precondition* prep) -> bool {
         return w->GetBreadCount() >= prep->getMultiplicateur();
     };
@@ -144,11 +144,11 @@ int main()
 
     // Attack state --------------------
     States AttackEnemy("Attack Enemy", Attack, 10);
-    Precondition prepAttackLook(Look, 1);
+    Precondition prepAttackLook(Attack, 1);
     prepAttackLook.Condition = [](const World* w,const Precondition* prep) -> bool {
         return w->GetEnemyFound();
     };
-    Precondition prepAttackWarriors(Warrior, 10);
+    Precondition prepAttackWarriors(Attack, 10);
     prepAttackWarriors.Condition = [](const World* w,const Precondition* prep) -> bool {
         return w->GetWarriorCount() >= prep->getMultiplicateur() || w->GetVillagerCount() >= prep->getMultiplicateur();
     };
@@ -180,6 +180,13 @@ int main()
     world.SetWarriorCount(0);
     world.SetBreadCount(10);
     Node* idx = gp.Execute(&AttackEnemy);
+
+    std::vector<States> tmp;
+    tmp.push_back(LookForEnemy);
+    tmp.push_back(CreateWarrior);
+    std::pair<TypeState, std::vector<States>> p(Attack, tmp);
+    tmp.clear();
+    gp.GetEffectMap().insert(p);
 
 	std::cout << " Bread : " << world.GetBreadCount() << std::endl;
 	std::cout << " Villager : " << world.GetVillagerCount() << std::endl;
