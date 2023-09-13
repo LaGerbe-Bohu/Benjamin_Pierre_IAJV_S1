@@ -1,22 +1,13 @@
-﻿// Benjamin_Pierre_IAJV_S1.cpp : Defines the entry point for the application.
-//
-
-#include <iostream>
+﻿#include <iostream>
 
 #include "../include/States.h"
-#include "../include/Precondition.h"
 #include "../include/World.h"
 #include "../include/GoapMachines.h"
-
-void ActionCutWood() {
-	std::cout << "Cutting wood." << std::endl;
-}
 
 void ActionCreateVillager(World* myWorld) {
 	myWorld->SetVillagerCount(myWorld->GetVillagerCount() + 1);
 	myWorld->SetBreadCount(myWorld->GetBreadCount() - 1);
 }
-
 
 void ActionCutWood(World* myWorld) {
     myWorld->SetWoodCount(myWorld->GetWoodCount() + 1);
@@ -41,6 +32,7 @@ void ActionCreateBread(World* myWorld) {
 void ActionCreateWarrior(World* myWorld) {
     myWorld->SetWarriorCount(myWorld->GetWarriorCount() + 1);
     myWorld->SetGoldCount(myWorld->GetGoldCount() - 1);
+    myWorld->SetIronCount(myWorld->GetIronCount() - 1);
 }
 
 void ActionAttackEnemy(World* myWorld) {
@@ -54,7 +46,7 @@ void ActionLookForEnemy(World* myWorld) {
 }
 
 void InitStates() {
-    
+
 }
 
 int main()
@@ -62,9 +54,9 @@ int main()
 	//InitStates();
 
     // Villager state
-    
+
     #pragma region StatesInit
-    States CreateVillager("Create a villager");
+    States CreateVillager("Villager created.");
 
     Precondition prepVillager;
     prepVillager.Condition = [](const World* w) -> bool {
@@ -74,8 +66,10 @@ int main()
 
     CreateVillager.Action = ActionCreateVillager;
 
+    CreateVillager.SetCost(1);
+
     // Wood state
-    States CutWood("Cut wood");
+    States CutWood("Cutting wood.");
 
     Precondition prepWood;
     prepWood.Condition = [](const World* w) -> bool {
@@ -88,7 +82,7 @@ int main()
     CutWood.SetCost(1);
 
     // Iron state
-    States MineIron(" Mine iron");
+    States MineIron("Mining iron.");
 
     Precondition prepIron;
     prepIron.Condition = [](const World* w) -> bool {
@@ -101,7 +95,7 @@ int main()
     MineIron.SetCost(2);
 
     // Gold state
-    States MineGold("Mine Gold");
+    States MineGold("Mining gold.");
 
     Precondition prepGold;
     prepGold.Condition = [](const World* w) -> bool {
@@ -114,7 +108,7 @@ int main()
     MineGold.SetCost(2);
 
     // Farm state
-    States CreateFarm("Create Farm");
+    States CreateFarm("Farm created.");
 
     Precondition prepFarm;
     prepFarm.Condition = [](const World* w) -> bool {
@@ -127,7 +121,7 @@ int main()
     CreateFarm.SetCost(2);
 
     // Bread state
-    States CreateBread("Create Bread");
+    States CreateBread("Bread created.");
 
     Precondition prepBread;
     prepBread.Condition = [](const World* w) -> bool {
@@ -140,7 +134,7 @@ int main()
     CreateBread.SetCost(2);
 
     // Warrior state
-    States CreateWarrior("Create Warrior");
+    States CreateWarrior("Warrior created.");
 
     Precondition prepWarrior;
     prepWarrior.Condition = [](const World* w) -> bool {
@@ -153,7 +147,7 @@ int main()
     CreateWarrior.SetCost(5);
 
     // Attack state
-    States AttackEnemy("Attack Enemy");
+    States AttackEnemy("Enemy attacked.");
 
     Precondition prepAttack;
     prepAttack.Condition = [](const World* w) -> bool {
@@ -167,7 +161,7 @@ int main()
     AttackEnemy.SetCost(10);
 
     // LookForEnemy state
-    States LookForEnemy("Look for Enemy");
+    States LookForEnemy("Enemy spotted!");
 
     Precondition prepLookForEnemy;
     prepLookForEnemy.Condition = [](const World* w) -> bool {
@@ -189,9 +183,9 @@ int main()
     possibility.push_back(&CreateWarrior);
     possibility.push_back(&MineGold);
 
-   
 
-    #pragma endregion 
+
+    #pragma endregion
 
 	World world = World();
     GoapMachine gp(possibility,&world);
@@ -205,7 +199,7 @@ int main()
 	std::cout << " Villager : " << world.GetVillagerCount() << std::endl;
 	std::cout << " Warrior : " << world.GetWarriorCount() << std::endl;
 	std::cout << " Gold : " << world.GetGoldCount() << std::endl;
-	
+
     while (idx != nullptr) {
         std::cout << idx->GetState()->GetLabel() << std::endl;
         idx = idx->GetPrev();
