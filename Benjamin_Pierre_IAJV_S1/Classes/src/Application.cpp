@@ -176,8 +176,8 @@ int main()
     tmp.push_back(&LookForEnemy);
     tmp.push_back(&CreateWarrior);
     std::pair<TypeState, std::vector<States*>> p(Attack,tmp);
-    tmp = std::vector<States*>();
     gp.GetEffectMap().insert(p);
+    tmp = std::vector<States*>();
 
 	std::cout << " Bread : " << world.GetBreadCount() << std::endl;
 	std::cout << " Villager : " << world.GetVillagerCount() << std::endl;
