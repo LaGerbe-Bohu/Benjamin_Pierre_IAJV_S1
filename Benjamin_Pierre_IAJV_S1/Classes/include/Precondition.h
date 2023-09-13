@@ -7,6 +7,7 @@ class World;
 class Precondition
 {
 	std::string label;
+	int multiplicateur;
 	public :
 	
 	std::string GetLabel()const {

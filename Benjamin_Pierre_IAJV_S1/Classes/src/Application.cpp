@@ -13,8 +13,8 @@ void ActionCutWood() {
 }
 
 void ActionCreateVillager(World* myWorld) {
-	myWorld->SetVillagerCount(myWorld->GetVillagerCount() + 1);
-	myWorld->SetBreadCount(myWorld->GetBreadCount() - 1);
+	myWorld->SetVillagerCount(myWorld->GetVillagerCount() + 10);
+	myWorld->SetBreadCount(myWorld->GetBreadCount() - 10);
 }
 
 
@@ -23,11 +23,11 @@ void ActionCutWood(World* myWorld) {
 }
 
 void ActionMineIron(World* myWorld) {
-    myWorld->SetIronCount(myWorld->GetIronCount() + 1);
+    myWorld->SetIronCount(myWorld->GetIronCount() + 10);
 }
 
 void ActionMineGold(World* myWorld) {
-    myWorld->SetGoldCount(myWorld->GetGoldCount() + 1);
+    myWorld->SetGoldCount(myWorld->GetGoldCount() + 10);
 }
 
 void ActionCreateFarm(World* myWorld) {
@@ -39,14 +39,14 @@ void ActionCreateBread(World* myWorld) {
 }
 
 void ActionCreateWarrior(World* myWorld) {
-    myWorld->SetWarriorCount(myWorld->GetWarriorCount() + 1);
-    myWorld->SetGoldCount(myWorld->GetGoldCount() - 1);
+    myWorld->SetWarriorCount(myWorld->GetWarriorCount() + 10);
+    myWorld->SetGoldCount(myWorld->GetGoldCount() - 10);
+    myWorld->SetIronCount(myWorld->GetIronCount() - 10);
 }
 
 void ActionAttackEnemy(World* myWorld) {
     myWorld->SetEnemyLivesCount(myWorld->GetEnemyLivesCount() - 10);
     myWorld->SetWarriorCount(myWorld->GetWarriorCount() - 10);
-    myWorld->SetEnemyFound(false);
 }
 
 void ActionLookForEnemy(World* myWorld) {
@@ -74,6 +74,8 @@ int main()
 
     CreateVillager.Action = ActionCreateVillager;
 
+    CreateVillager.SetCost(1);
+
     // Wood state
     States CutWood("Cut wood");
 
@@ -88,7 +90,7 @@ int main()
     CutWood.SetCost(1);
 
     // Iron state
-    States MineIron(" Mine iron");
+    States MineIron("Mine iron");
 
     Precondition prepIron;
     prepIron.Condition = [](const World* w) -> bool {
@@ -118,7 +120,7 @@ int main()
 
     Precondition prepFarm;
     prepFarm.Condition = [](const World* w) -> bool {
-        return w->GetVillagerCount() > 0 && w->GetWoodCount() > 4;
+        return w->GetVillagerCount() > 0 && w->GetWoodCount() > 5;
     };
     CreateFarm.AddPrecondition(&prepFarm);
 
@@ -144,7 +146,8 @@ int main()
 
     Precondition prepWarrior;
     prepWarrior.Condition = [](const World* w) -> bool {
-        return w->GetIronCount() > 0 && w->GetGoldCount() > 0 && w->GetBreadCount() > 0;
+        bool b = w->GetIronCount() > 0 && w->GetGoldCount() > 0;
+        return b;
     };
     CreateWarrior.AddPrecondition(&prepWarrior);
 
@@ -184,34 +187,32 @@ int main()
 
     std::vector<States*> possibility;
 
-    possibility.push_back(&CreateBread);
     possibility.push_back(&LookForEnemy);
+    possibility.push_back(&CreateVillager);
     possibility.push_back(&CreateWarrior);
+    possibility.push_back(&MineIron);
     possibility.push_back(&MineGold);
-
-   
 
     #pragma endregion 
 
 	World world = World();
     GoapMachine gp(possibility,&world);
-    world.SetWarriorCount(2);
-    world.SetVillagerCount(10);
-    world.SetIronCount(100);
-    world.SetBreadCount(100);
+    world.SetWarriorCount(0);
+    world.SetBreadCount(10);
     Node* idx = gp.Execute(&AttackEnemy);
 
 	std::cout << " Bread : " << world.GetBreadCount() << std::endl;
 	std::cout << " Villager : " << world.GetVillagerCount() << std::endl;
 	std::cout << " Warrior : " << world.GetWarriorCount() << std::endl;
 	std::cout << " Gold : " << world.GetGoldCount() << std::endl;
-	
+	std::cout << " Iron : " << world.GetIronCount() << std::endl;
+	std::cout << " Wood : " << world.GetWoodCount() << std::endl;
+    std::cout << std::endl;
+
     while (idx != nullptr) {
         std::cout << idx->GetState()->GetLabel() << std::endl;
         idx = idx->GetPrev();
     }
-
-
 
 
     return 0;

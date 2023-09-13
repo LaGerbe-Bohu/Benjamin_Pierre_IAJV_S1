@@ -18,31 +18,31 @@ World::World(unsigned int myVillagerCount, unsigned int myWarriorCount, unsigned
     enemyFound = myEnemyFound;
 }
 
-unsigned int World::GetVillagerCount() const {
+int World::GetVillagerCount() const {
     return villagerCount;
 }
 
-unsigned int World::GetWarriorCount() const {
+ int World::GetWarriorCount() const {
     return warriorCount;
 }
 
-unsigned int World::GetEnemyLivesCount() const {
+ int World::GetEnemyLivesCount() const {
     return enemyLivesCount;
 }
 
-unsigned int World::GetBreadCount() const {
+ int World::GetBreadCount() const {
     return breadCount;
 }
 
-unsigned int World::GetIronCount() const {
+ int World::GetIronCount() const {
     return ironCount;
 }
 
-unsigned int World::GetGoldCount() const {
+ int World::GetGoldCount() const {
     return goldCount;
 }
 
-unsigned int World::GetWoodCount() const {
+ int World::GetWoodCount() const {
     return woodCount;
 }
 

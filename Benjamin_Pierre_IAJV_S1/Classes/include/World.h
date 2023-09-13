@@ -10,10 +10,10 @@ class World {
         bool enemyFound;
 
         // Ressources
-        unsigned int breadCount;
-        unsigned int ironCount;
-        unsigned int goldCount;
-        unsigned int woodCount;
+         int breadCount;
+         int ironCount;
+         int goldCount;
+         int woodCount;
 
         // Buildings
         unsigned int farmCount;
@@ -54,13 +54,13 @@ class World {
         }
 
         // Getters
-        unsigned int GetVillagerCount() const;
-        unsigned int GetWarriorCount() const;
-        unsigned int GetEnemyLivesCount() const;
-        unsigned int GetBreadCount() const;
-        unsigned int GetIronCount() const;
-        unsigned int GetGoldCount() const;
-        unsigned int GetWoodCount() const;
+         int GetVillagerCount() const;
+         int GetWarriorCount() const;
+         int GetEnemyLivesCount() const;
+        int GetBreadCount() const;
+        int GetIronCount() const;
+        int GetGoldCount() const;
+        int GetWoodCount() const;
         unsigned int GetFarmCount() const;
         bool GetEnemyFound() const;
 

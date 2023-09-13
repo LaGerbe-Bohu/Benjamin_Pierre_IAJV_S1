@@ -10,6 +10,7 @@ class Node {
 	World* currentWorld;
 	States* State;
 	Node* prev;
+	std::vector<Precondition* > nonMetPrecondition;
 
 public:
 	Node(int myHeuristique,  States* myState,World* myWorld) :heuristique(myHeuristique), State(myState), currentWorld(myWorld) {};
@@ -32,7 +33,17 @@ public:
 		return this->State;
 	}
 
+	std::vector<Precondition*> GetNonMetPrecondition() {
+		return nonMetPrecondition;
+	}
 
+	void SetNonMetPrecondition(std::vector<Precondition*> nonMet) {
+		nonMet = nonMetPrecondition;
+	}
+
+	bool IsInThePath(States* myNode);
+
+	void SimulatePath( World* myWorld);
 
 	Node* GetPrev() {
 		return this->prev;

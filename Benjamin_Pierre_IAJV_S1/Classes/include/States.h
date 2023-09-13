@@ -29,6 +29,10 @@ class States {
         return once;
     }
 
+    std::vector<Precondition> GetPreconditions() {
+        return vecPreconditions;
+    }
+
     void AddPrecondition(const Precondition* precondition) {
         this->vecPreconditions.push_back(*precondition);
     }
