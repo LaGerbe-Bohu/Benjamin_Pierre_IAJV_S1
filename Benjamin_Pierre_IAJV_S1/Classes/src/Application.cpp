@@ -72,12 +72,6 @@ void ActionLookForEnemy(World* myWorld) {
 
 void InitStates() {
 
-}
-
-int main()
-{
-	//InitStates();
-
     #pragma region StatesInit
 
     // Villager state --------------
