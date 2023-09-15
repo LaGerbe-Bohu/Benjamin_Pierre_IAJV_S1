@@ -114,7 +114,7 @@ Node* GoapMachine::Execute( States* myRoot) {
 
 		for (int j = 0; j < state.size(); j++)
 		{
-			Node* n = new Node(state[j],new World(myWorld));
+			Node* n = new Node(state[j],&myWorld);
 
 			for (int k = 0; k < n->GetState()->GetVecPrecondition().size(); k++) {
 				Precondition* prep = n->GetState()->GetVecPrecondition()[k];

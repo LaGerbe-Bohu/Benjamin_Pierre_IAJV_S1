@@ -2,6 +2,7 @@
 #include "../include/States.h"
 #include <vector>
 #include <unordered_map>
+#include "World.h";
 class Precondition;
 class World;
 
@@ -16,13 +17,12 @@ class Node {
 public:
 	Node(int myHeuristic, States* myState, World* myWorld) : heuristic(myHeuristic), State(myState), currentWorld(myWorld) {
 	}
-	Node(States* myState, World* myWorld) : State(myState), currentWorld(myWorld) {
+	Node(States* myState,const World* myWorld) : State(myState),currentWorld(new World(myWorld)){
 	}
 
 	~Node() {
+	
 		delete currentWorld;
-		delete State;
-		delete prev;
 	}
 
 	World* GetWorld() const {
@@ -75,20 +75,22 @@ public:
 class GoapMachine {
     private:
         std::vector<Node*> openNode;
-        std::vector<Precondition*> vecNotMet;
-        std::vector<States*> possibleStates;
+
         World* world;
         std::unordered_map<TypeState,States*> EffectMap;
 
 	public :
-        GoapMachine(std::vector<States*> myPossibleStates,World* myWorld):possibleStates(myPossibleStates), world(myWorld) {};
+        GoapMachine(World* myWorld):world(myWorld) {};
 
 		~GoapMachine() {
-			possibleStates.clear();
+
+			for (auto p : openNode)
+			{
+				delete p;
+			}
+		
 			EffectMap.clear();
 			openNode.clear();
-			vecNotMet.clear();
-		
 		}
 
         Node* Execute(States* myRoot);

@@ -283,7 +283,7 @@ void InitStates() {
 
     // World -----------------
     World world = World();
-    GoapMachine gp(possibility, &world);
+    GoapMachine gp(&world);
     world.SetVillagerCount(2);
 
     // Goap machine hash map setup -------------
@@ -301,8 +301,9 @@ void InitStates() {
     gp.AddToHmap(LookCreateWarrior, &CreateWarrior);
     gp.AddToHmap(FarmWood, &CutWood);
     gp.AddToHmap(FarmVillager, &CreateVillager);
+    
+    
     gp.AddToHmap(AttackChurch, &CreateChurch);
-
     gp.AddToHmap(ChurchStone,&MineStone);
     gp.AddToHmap(ChurchPriest,&CreatePriest);
     gp.AddToHmap(ChurchWood,&CutWood);
@@ -313,12 +314,13 @@ void InitStates() {
     gp.AddToHmap(PartyVillagoies,&CreateVillager);
     gp.AddToHmap(PartyGold,&MineGold);
     gp.AddToHmap(PartyWine,&CreateWine);
+    
 
     clock_t start, end;
     start = clock();
     //InitStates();
     Node* idx;
-    for (int i = 0; i < 1; i++)
+    for (int i = 0; i < 1000000; i++)
     {
         idx = gp.Execute(&AttackEnemy);
 
