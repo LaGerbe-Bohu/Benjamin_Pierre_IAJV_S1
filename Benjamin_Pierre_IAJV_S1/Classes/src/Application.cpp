@@ -22,6 +22,18 @@ void ActionMineStone(World* myWorld) {
     myWorld->SetStoneCount(myWorld->GetStone() + 1);
 }
 
+void ActionCreateWine(World* myWorld) {
+    myWorld->SetWineCount(myWorld->GetWineCount() + 1);
+}
+
+void ActionCreatePriest(World* myWorld) {
+    myWorld->SetPriestCount(myWorld->GetPriest() + 1);
+}
+
+void ActionBigParty(World* myWorld) {
+    myWorld->SetParty(true);
+}
+
 
 void ActionMineIron(World* myWorld) {
     myWorld->SetIronCount(myWorld->GetIronCount() + 1);
@@ -161,10 +173,15 @@ void InitStates() {
         return w->GetWarriorCount() >= prep->GetMultiplicateur();
     };
 
+    Precondition prepAttackChurch(AttackChurch, 1);
+    prepAttackChurch.Condition = [](const World* w, const Precondition* prep) -> bool {
+        return w->GetChurch() > 0;
+    };
 
     AttackEnemy.Action = ActionAttackEnemy;
     AttackEnemy.AddToVecPrecondition(&prepAttackWarriors);
     AttackEnemy.AddToVecPrecondition(&prepAttackLook);
+    AttackEnemy.AddToVecPrecondition(&prepAttackChurch);
 
     // Party ----------------------
     States BigPartyState("Big Party", PartyVillagoies, 10);
@@ -174,27 +191,33 @@ void InitStates() {
     };
     Precondition prepPartyGold(PartyGold, 1);
     prepPartyGold.Condition = [](const World* w, const Precondition* prep) -> bool {
-        return w->GetGoldCount() >= 0;
+        return w->GetGoldCount() > 0;
     };
 
-    BigPartyState.Action = ActionCreateWarrior;
-    BigPartyState.AddToVecPrecondition(&prepPartyVillagoies);
-    BigPartyState.AddToVecPrecondition(&prepPartyGold);
-    
-    // Prist ----------------------
-    States CreatePrist("Create Prist", PristWine, 2);
-    Precondition prepPristWine(PristWine, 1);
-    prepPristWine.Condition = [](const World* w, const Precondition* prep) -> bool {
+    Precondition prepPartyWine(PartyWine, 1);
+    prepPartyWine.Condition = [](const World* w, const Precondition* prep) -> bool {
         return w->GetWineCount() > 0;
     };
-    Precondition prepPartyGold(PartyGold, 1);
-    prepPartyGold.Condition = [](const World* w, const Precondition* prep) -> bool {
+
+    BigPartyState.Action = ActionBigParty;
+    BigPartyState.AddToVecPrecondition(&prepPartyVillagoies);
+    BigPartyState.AddToVecPrecondition(&prepPartyGold);
+    BigPartyState.AddToVecPrecondition(&prepPartyWine);
+    
+    // Priest ----------------------
+    States CreatePriest("Create Priest", PriestParty, 2);
+    Precondition prepPriestParty(PriestParty, 1);
+    prepPriestParty.Condition = [](const World* w, const Precondition* prep) -> bool {
+        return w->GetParty();
+    };
+    Precondition prepPriestGold(PriestGold, 1);
+    prepPriestGold.Condition = [](const World* w, const Precondition* prep) -> bool {
         return w->GetGoldCount() >= 0;
     };
 
-    CreatePrist.Action = ActionCreateWarrior;
-    CreatePrist.AddToVecPrecondition(&prepPristWine);
-    CreatePrist.AddToVecPrecondition(&prepPartyGold);
+    CreatePriest.Action = ActionCreatePriest;
+    CreatePriest.AddToVecPrecondition(&prepPriestParty);
+    CreatePriest.AddToVecPrecondition(&prepPriestGold);
 
     // Create Wine ----------------------
     States CreateWine("Create Wine", WineVillager, 2);
@@ -204,17 +227,12 @@ void InitStates() {
     };
     Precondition prepCreateWineWood(WineWood, 1);
     prepCreateWineWood.Condition = [](const World* w, const Precondition* prep) -> bool {
-        return w->GetWoodCount() >= 0;
-    };
-    Precondition prepCreateWineParty(WineParty, 1);
-    prepCreateWineParty.Condition = [](const World* w, const Precondition* prep) -> bool {
-        return w->GetParty();
+        return w->GetWoodCount() > 0;
     };
 
-    CreateWine.Action = ActionCreateWarrior;
+    CreateWine.Action = ActionCreateWine;
     CreateWine.AddToVecPrecondition(&prepCreateWineVillager);
     CreateWine.AddToVecPrecondition(&prepCreateWineWood);
-    CreateWine.AddToVecPrecondition(&prepCreateWineParty);
 
     // Create Church ----------------------
     States CreateChurch("Create Church", ChurchStone, 2);
@@ -222,29 +240,29 @@ void InitStates() {
     prepCreateChurchStone.Condition = [](const World* w, const Precondition* prep) -> bool {
         return w->GetStone() > 0;
     };
-    Precondition prepCreateChurchPrist(ChurchPrist, 1);
-    prepCreateChurchPrist.Condition = [](const World* w, const Precondition* prep) -> bool {
-        return w->GetPrist() >= 0;
+    Precondition prepCreateChurchPriest(ChurchPriest, 1);
+    prepCreateChurchPriest.Condition = [](const World* w, const Precondition* prep) -> bool {
+        return w->GetPriest() > 0;
     };
     Precondition prepCreateChurchWood(ChurchWood, 1);
     prepCreateChurchWood.Condition = [](const World* w, const Precondition* prep) -> bool {
-        return w->GetWoodCount() > 1;
+        return w->GetWoodCount() >= 1;
     };
 
     CreateChurch.Action = ActionCreateChurch;
     CreateChurch.AddToVecPrecondition(&prepCreateChurchStone);
-    CreateChurch.AddToVecPrecondition(&prepCreateWineWood);
+    CreateChurch.AddToVecPrecondition(&prepCreateChurchPriest);
     CreateChurch.AddToVecPrecondition(&prepCreateChurchWood);
 
     // Stone state ---------------
-    States MineIron("Mine stone", Stone, 2);
+    States MineStone("Mine stone", Stone, 2);
     Precondition prepStone(Stone, 1);
     prepStone.Condition = [](const World* w, const Precondition* prep) -> bool {
         return w->GetVillagerCount() >= prep->GetMultiplicateur();
     };
 
-    MineIron.Action = ActionMineStone;
-    MineIron.AddToVecPrecondition(&prepStone);
+    MineStone.Action = ActionMineStone;
+    MineStone.AddToVecPrecondition(&prepStone);
 
     // LookForEnemy state --------------------
     States LookForEnemy("Look for Enemy", LookCreateWarrior, 5);
@@ -258,14 +276,8 @@ void InitStates() {
     LookForEnemy.AddToVecPrecondition(&prepLookForEnemy);
     std::vector<States*> possibility;
 
-    possibility.push_back(&LookForEnemy);
-    possibility.push_back(&CreateVillager);
-    possibility.push_back(&CreateWarrior);
-    possibility.push_back(&MineIron);
-    possibility.push_back(&MineGold);
-    possibility.push_back(&CutWood);
-    possibility.push_back(&CreateBread);
-    possibility.push_back(&CreateFarm);
+    
+
 
 #pragma endregion
 
@@ -289,6 +301,18 @@ void InitStates() {
     gp.AddToHmap(LookCreateWarrior, &CreateWarrior);
     gp.AddToHmap(FarmWood, &CutWood);
     gp.AddToHmap(FarmVillager, &CreateVillager);
+    gp.AddToHmap(AttackChurch, &CreateChurch);
+
+    gp.AddToHmap(ChurchStone,&MineStone);
+    gp.AddToHmap(ChurchPriest,&CreatePriest);
+    gp.AddToHmap(ChurchWood,&CutWood);
+    gp.AddToHmap(PriestParty,&BigPartyState);
+    gp.AddToHmap(PriestGold,&MineGold);
+    gp.AddToHmap(WineVillager,&CreateVillager);
+    gp.AddToHmap(WineWood,&CutWood);
+    gp.AddToHmap(PartyVillagoies,&CreateVillager);
+    gp.AddToHmap(PartyGold,&MineGold);
+    gp.AddToHmap(PartyWine,&CreateWine);
 
     clock_t start, end;
     start = clock();

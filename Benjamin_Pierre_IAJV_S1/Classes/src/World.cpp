@@ -1,18 +1,5 @@
 #include "../include/World.h"
 
-World::World(int myVillagerCount, int myWarriorCount, int myEnemyLivesCount,
-             int myBreadCount, int myIronCount, int myGoldCount,
-             int myWoodCount, int myFarmCount, bool myEnemyFound) {
-    villagerCount = myVillagerCount;
-    warriorCount = myWarriorCount;
-    enemyLivesCount = myEnemyLivesCount;
-    breadCount = myBreadCount;
-    ironCount = myIronCount;
-    goldCount = myGoldCount;
-    woodCount = myWoodCount;
-    farmCount = myFarmCount;
-    enemyFound = myEnemyFound;
-}
 
 int World::GetVillagerCount() const {
     return villagerCount;
@@ -60,9 +47,9 @@ bool World::GetParty() const
     return Party;
 }
 
-int World::GetPrist() const
+int World::GetPriest() const
 {
-    return pristCount;
+    return PriestCount;
 }
 
 int World::GetStone() const
@@ -121,9 +108,9 @@ void World::SetWineCount(int myWineCount)
     this->wineCount = myWineCount;
 }
 
-void World::SetPristCount(int myPristCount)
+void World::SetPriestCount(int myPriestCount)
 {
-    pristCount = myPristCount;
+    PriestCount = myPriestCount;
 }
 
 void World::SetStoneCount(int myStoneCount)
@@ -133,6 +120,6 @@ void World::SetStoneCount(int myStoneCount)
 
 void World::SetChurchCount(int myChurchCount)
 {
-    myChurchCount = myChurchCount;
+    churchCount = myChurchCount;
 }
 

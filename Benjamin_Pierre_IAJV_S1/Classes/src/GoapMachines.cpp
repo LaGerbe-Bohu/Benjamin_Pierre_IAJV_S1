@@ -94,7 +94,6 @@ Node* GoapMachine::Execute( States* myRoot) {
 		int idx = FindCorrectNode(openNode);
 		currentNode = openNode[idx];
 
-
 		openNode.erase(openNode.begin() + idx);
 
 		std::vector<States*> state;
@@ -105,7 +104,7 @@ Node* GoapMachine::Execute( States* myRoot) {
 			TypeState t = currentNode->GetNonMetPrecondition()[i]->GetTypeState();
 			States* s = GetEffectMap()[t];
 
-			if (prep->Condition(currentNode->GetWorld(), prep) || (std::find(state.begin(),state.end(),s) != state.end()) ) {
+			if (prep->Condition(currentNode->GetWorld(), prep) || (std::find(state.begin(),state.end(),s) != state.end())) {
 				continue;
 			}
 
@@ -115,7 +114,7 @@ Node* GoapMachine::Execute( States* myRoot) {
 
 		for (int j = 0; j < state.size(); j++)
 		{
-			Node* n = new Node(state[j], &myWorld);
+			Node* n = new Node(state[j],new World(myWorld));
 
 			for (int k = 0; k < n->GetState()->GetVecPrecondition().size(); k++) {
 				Precondition* prep = n->GetState()->GetVecPrecondition()[k];

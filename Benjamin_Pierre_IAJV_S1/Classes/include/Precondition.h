@@ -25,14 +25,17 @@ enum TypeState {
 	VillagerBread,
 	Stone,
 	ChurchWood,
-	ChurchPrist,
+	ChurchPriest,
 	ChurchStone,
 	WineParty,
 	WineVillager,
-	PristWine,
+	PriestParty,
 	PartyGold,
 	PartyVillagoies,
-	WineWood
+	WineWood,
+	PriestGold,
+	PartyWine,
+	AttackChurch
 };
 
 class Precondition
