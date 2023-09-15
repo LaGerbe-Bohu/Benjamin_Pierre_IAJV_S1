@@ -186,23 +186,21 @@ int main()
     // World -----------------
 	World world = World();
     GoapMachine gp(possibility,&world);
-    world.SetVillagerCount(2);
-
-   
+    world.SetBreadCount(1);
+  
 
     // Goap machine hash map setup -------------
     gp.AddToHmap(Villager, &CreateBread );
     gp.AddToHmap(Wood,  &CreateVillager );
     gp.AddToHmap(Iron,  &CreateVillager );
     gp.AddToHmap(Gold,  &CreateVillager );
-    gp.AddToHmap(BreadFarm,  &CreateVillager);
+    gp.AddToHmap(BreadFarm,  &CreateFarm);
     gp.AddToHmap(BreadVillager, &CreateVillager);
     gp.AddToHmap(WarriorIron, &MineIron);
     gp.AddToHmap(WarriorGold, &MineGold);
     gp.AddToHmap(WarriorBread, &CreateBread);
     gp.AddToHmap(AttackLook,&LookForEnemy);
     gp.AddToHmap(AttackWarrior, &CreateWarrior);
-    gp.AddToHmap(BreadVillager, &CreateVillager );
     gp.AddToHmap(LookCreateWarrior, &CreateWarrior );
     gp.AddToHmap(FarmWood, &CutWood );
     gp.AddToHmap(FarmVillager, &CreateVillager );

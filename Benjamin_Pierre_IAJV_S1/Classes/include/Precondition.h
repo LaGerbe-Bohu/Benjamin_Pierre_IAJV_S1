@@ -21,7 +21,8 @@ enum TypeState {
 	Attack,
 	LookCreateWarrior,
 	FarmVillager,
-	FarmWood
+	FarmWood,
+	VillagerBread
 };
 
 class Precondition
