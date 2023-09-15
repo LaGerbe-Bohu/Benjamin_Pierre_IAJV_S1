@@ -52,9 +52,7 @@ void InitStates() {
 int main()
 {
     clock_t start, end;
-    start = clock();
 
-    std::ios_base::sync_with_stdio(false);
 	//InitStates();
 
     #pragma region StatesInit
@@ -209,8 +207,12 @@ int main()
     gp.AddToHmap(FarmWood, &CutWood );
     gp.AddToHmap(FarmVillager, &CreateVillager );
 
-
-    Node* idx = gp.Execute(&AttackEnemy);
+    start = clock();
+    Node* idx;
+    for (int i = 0; i < 1000000; ++i) {
+        idx = gp.Execute(&AttackEnemy);
+    }
+    end = clock();
 
 	std::cout << " Bread : " << world.GetBreadCount() << std::endl;
 	std::cout << " Villager : " << world.GetVillagerCount() << std::endl;
@@ -224,7 +226,7 @@ int main()
         std::cout << idx->GetState()->GetLabel() << std::endl;
         idx = idx->GetPrev();
     }
-    end = clock();
+
 
     double time_taken = double(end - start) / double(CLOCKS_PER_SEC);
     std::cout << "Time taken by program is : " << std::fixed
