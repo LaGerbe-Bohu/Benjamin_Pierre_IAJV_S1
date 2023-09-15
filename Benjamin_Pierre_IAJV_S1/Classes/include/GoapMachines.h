@@ -76,19 +76,19 @@ class GoapMachine {
         std::vector<Precondition*> vecNotMet;
         std::vector<States*> possibleStates;
         World* world;
-        std::unordered_map<TypeState,std::vector<States*>> EffectMap;
+        std::unordered_map<TypeState,States*> EffectMap;
 
 	public :
         GoapMachine(std::vector<States*> myPossibleStates,World* myWorld):possibleStates(myPossibleStates), world(myWorld) {};
 
         Node* Execute(States* myRoot);
 
-        std::unordered_map<TypeState, std::vector<States*>> GetEffectMap() {
-
-            return EffectMap;
+        std::unordered_map<TypeState, States*> GetEffectMap() {
+            
+			return EffectMap;
         }
 
-		void AddToHmap(TypeState typeState,std::vector<States*> states) {
+		void AddToHmap(TypeState typeState,States* states) {
 			EffectMap[typeState] = states;
 		}
 

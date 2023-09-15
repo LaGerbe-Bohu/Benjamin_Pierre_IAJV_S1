@@ -3,7 +3,7 @@
 #include "../include/World.h"
 #include <limits>
 #include <cassert>
-
+#include <iostream>
 
 void Node::SimulatePath( World* myWorld) {
 	/*Node* idx = this;
@@ -38,7 +38,15 @@ int FindCorrectNode(std::vector<Node*> myOpenNode) {
 		}
 	}
 
+
+	if (possibleNode.size() >= 2) {
+		if (myOpenNode[possibleNode[0]]->GetHeuristique() > myOpenNode[possibleNode[1]]->GetHeuristique()) {
+			possibleNode.erase(possibleNode.begin() + 0);
+		}
+	}
+
 	assert(possibleNode.size() > 0);
+
 
 	if (possibleNode.size() == 1) {
 		return possibleNode[0];
@@ -66,6 +74,11 @@ Node* GoapMachine::Execute( States* myRoot) {
 	currentNode->SetHeuristique(currentNode->GetState()->GetVecPrecondition().size());
 	openNode.push_back(currentNode);
 
+	for (int i = 0; i < currentNode->GetState()->GetVecPrecondition().size(); i++)
+	{
+		currentNode->AddNonMetPrecondition(currentNode->GetState()->GetVecPrecondition()[i]);
+	}
+
 	while(!openNode.empty())
 	{
 
@@ -79,23 +92,29 @@ Node* GoapMachine::Execute( States* myRoot) {
 		
 		int idx = FindCorrectNode(openNode);
 		currentNode = openNode[idx];
-		for (int i = 0; i < currentNode->GetState()->GetVecPrecondition().size(); i++)
-		{
-			currentNode->AddNonMetPrecondition(currentNode->GetState()->GetVecPrecondition()[i]);
-		}
+
 
 		openNode.erase(openNode.begin() + idx);
 
-		std::vector<States*> state = GetEffectMap()[currentNode->GetState()->GetTypeState()];
+		std::vector<States*> state;
 
 		for (int i = 0; i < currentNode->GetNonMetPrecondition().size(); i++)
 		{
+			Precondition* prep = currentNode->GetNonMetPrecondition()[i];
+			TypeState t = currentNode->GetNonMetPrecondition()[i]->GetTypeState();
+			States* s = GetEffectMap()[t];
 
+			if (prep->Condition(currentNode->GetWorld(), prep) || (std::find(state.begin(),state.end(),s) != state.end()) ) {
+				continue;
+			}
+			
+			state.push_back(s);
 		}
+
 
 		for (int j = 0; j < state.size(); j++)
 		{
-			Node* n = new Node(state[j], new World(currentNode->GetWorld()));
+			Node* n = new Node(state[j], new World(myWorld));
 
 			for (int k = 0; k < n->GetState()->GetVecPrecondition().size(); k++) {
 				Precondition* prep = n->GetState()->GetVecPrecondition()[k];
@@ -119,17 +138,6 @@ Node* GoapMachine::Execute( States* myRoot) {
 
 
 			n->SetHeuristique(n->GetNonMetPrecondition().size());
-
-			bool isCompleted = true;
-			for (int k = 0; k < currentNode->GetState()->GetVecPrecondition().size(); k++)
-			{
-				Precondition* prep = currentNode->GetState()->GetVecPrecondition()[k];
-				if (!prep->Condition(&myWorld, prep)) {
-					n->AddNonMetPrecondition(currentNode->GetState()->GetVecPrecondition()[k]);
-					isCompleted = false;
-				}
-			}
-		
 			openNode.push_back(n);
 					
 		}

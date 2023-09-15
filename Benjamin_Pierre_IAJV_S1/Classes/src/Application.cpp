@@ -10,15 +10,15 @@ void ActionCreateVillager(World* myWorld) {
 }
 
 void ActionCutWood(World* myWorld) {
-    myWorld->SetWoodCount(myWorld->GetWoodCount() + 10);
+    myWorld->SetWoodCount(myWorld->GetWoodCount() + 1);
 }
 
 void ActionMineIron(World* myWorld) {
-    myWorld->SetIronCount(myWorld->GetIronCount() + 10);
+    myWorld->SetIronCount(myWorld->GetIronCount() + 1);
 }
 
 void ActionMineGold(World* myWorld) {
-    myWorld->SetGoldCount(myWorld->GetGoldCount() + 10);
+    myWorld->SetGoldCount(myWorld->GetGoldCount() + 1);
 }
 
 void ActionCreateFarm(World* myWorld) {
@@ -26,18 +26,18 @@ void ActionCreateFarm(World* myWorld) {
 }
 
 void ActionCreateBread(World* myWorld) {
-    myWorld->SetBreadCount(myWorld->GetBreadCount() + 10);
+    myWorld->SetBreadCount(myWorld->GetBreadCount() + 1);
 }
 
 void ActionCreateWarrior(World* myWorld) {
-    myWorld->SetWarriorCount(myWorld->GetWarriorCount() + 10);
-    myWorld->SetGoldCount(myWorld->GetGoldCount() - 10);
-    myWorld->SetIronCount(myWorld->GetIronCount() - 10);
+    myWorld->SetWarriorCount(myWorld->GetWarriorCount() + 1);
+    myWorld->SetGoldCount(myWorld->GetGoldCount() - 1);
+    myWorld->SetIronCount(myWorld->GetIronCount() - 1);
 }
 
 void ActionAttackEnemy(World* myWorld) {
-    myWorld->SetEnemyLivesCount(myWorld->GetEnemyLivesCount() - 10);
-    myWorld->SetWarriorCount(myWorld->GetWarriorCount() - 10);
+    myWorld->SetEnemyLivesCount(myWorld->GetEnemyLivesCount() - 1);
+    myWorld->SetWarriorCount(myWorld->GetWarriorCount() - 1);
 }
 
 void ActionLookForEnemy(World* myWorld) {
@@ -55,10 +55,10 @@ int main()
     #pragma region StatesInit
 
     // Villager state --------------
-    States CreateVillager("Villager created.",Villager,1);
+    States CreateVillager("Villager created.",Villager,3);
     Precondition prepVillager(Villager,1);
     prepVillager.Condition = [](const World* w,const Precondition* prep) -> bool {
-        return w->GetBreadCount() >= prep->getMultiplicateur();
+        return w->GetBreadCount() >= prep->GetMultiplicateur();
     };
 
     CreateVillager.Action = ActionCreateVillager;
@@ -69,7 +69,7 @@ int main()
     States CutWood("Cut wood",Wood,2);
     Precondition prepWood(Wood,1);
     prepWood.Condition = [](const World* w,const Precondition* prep) -> bool {
-        return w->GetVillagerCount() >= prep->getMultiplicateur();
+        return w->GetVillagerCount() >= prep->GetMultiplicateur();
     };
 
     CutWood.Action = ActionCutWood;
@@ -79,7 +79,7 @@ int main()
     States MineIron("Mine iron",Iron,2);
     Precondition prepIron(Iron,1);
     prepIron.Condition = [](const World* w,const Precondition* prep) -> bool {
-        return w->GetVillagerCount() >= prep->getMultiplicateur();
+        return w->GetVillagerCount() >= prep->GetMultiplicateur();
     };
 
     MineIron.Action = ActionMineIron;
@@ -89,7 +89,7 @@ int main()
     States MineGold("Mine Gold",Gold,2);
     Precondition prepGold(Gold,1);
     prepGold.Condition = [](const World* w,const Precondition* prep) -> bool {
-        return w->GetVillagerCount() >= prep->getMultiplicateur();
+        return w->GetVillagerCount() >= prep->GetMultiplicateur();
     };
 
     MineGold.Action = ActionMineGold;
@@ -98,13 +98,13 @@ int main()
 
     // Farm state ---------------
     States CreateFarm("Create Farm",Farm,3);
-    Precondition prepFarm(Farm, 1);
+    Precondition prepFarm(FarmVillager, 1);
     prepFarm.Condition = [](const World* w,const Precondition * prep) -> bool {
-        return w->GetVillagerCount() >= prep->getMultiplicateur();
+        return w->GetVillagerCount() >= prep->GetMultiplicateur();
     };
-    Precondition prepFarmWood(Farm, 5);
+    Precondition prepFarmWood(FarmWood, 1);
     prepFarmWood.Condition = [](const World* w, const Precondition* prep) -> bool {
-        return w->GetWoodCount() >= prep->getMultiplicateur();
+        return w->GetWoodCount() >= prep->GetMultiplicateur();
     };
 
 
@@ -113,14 +113,14 @@ int main()
     CreateFarm.AddToVecPrecondition(&prepFarmWood);
 
     // Bread state --------------------
-    States CreateBread("Create Bread",Bread,2);
-    Precondition prepBreadVillager(Bread,1);
+    States CreateBread("Create Bread",BreadFarm,2);
+    Precondition prepBreadVillager(BreadVillager,1);
     prepBreadVillager.Condition = [](const World* w,const Precondition* prep) -> bool {
-        return w->GetVillagerCount() >= prep->getMultiplicateur();
+        return w->GetVillagerCount() >= prep->GetMultiplicateur();
     };
-    Precondition prepBreadFarm(Bread, 1);
+    Precondition prepBreadFarm(BreadFarm, 1);
     prepBreadFarm.Condition = [](const World* w, const Precondition* prep) -> bool {
-        return  w->GetFarmCount() >= prep->getMultiplicateur();
+        return  w->GetFarmCount() >= prep->GetMultiplicateur();
     };
 
     CreateBread.Action = ActionCreateBread;
@@ -128,17 +128,17 @@ int main()
     CreateBread.AddToVecPrecondition(&prepBreadVillager);
     // Warrior state --------------------
     States CreateWarrior("Create Warrior", Warrior, 5);
-    Precondition prepWarriorIron(Warrior, 1);
+    Precondition prepWarriorIron(WarriorIron, 1);
     prepWarriorIron.Condition = [](const World* w,const Precondition* prep) -> bool {
-        return w->GetIronCount() >= prep->getMultiplicateur();
+        return w->GetIronCount() >= prep->GetMultiplicateur();
     };
-    Precondition prepWarriorGold(Warrior, 1);
+    Precondition prepWarriorGold(WarriorGold, 1);
     prepWarriorGold.Condition = [](const World* w,const Precondition* prep) -> bool {
-        return w->GetGoldCount() >= prep->getMultiplicateur();
+        return w->GetGoldCount() >= prep->GetMultiplicateur();
     };
-    Precondition prepWarriorBread(Warrior, 1);
+    Precondition prepWarriorBread(WarriorBread, 1);
     prepWarriorBread.Condition = [](const World* w,const Precondition* prep) -> bool {
-        return w->GetBreadCount() >= prep->getMultiplicateur();
+        return w->GetBreadCount() >= prep->GetMultiplicateur();
     };
 
     CreateWarrior.Action = ActionCreateWarrior;
@@ -148,24 +148,24 @@ int main()
 
     // Attack state --------------------
     States AttackEnemy("Attack Enemy", Attack, 10);
-    Precondition prepAttackLook(Attack, 1);
+    Precondition prepAttackLook(AttackLook, 1);
     prepAttackLook.Condition = [](const World* w,const Precondition* prep) -> bool {
         return w->GetEnemyFound();
     };
-    Precondition prepAttackWarriors(Attack, 10);
+    Precondition prepAttackWarriors(AttackWarrior, 1);
     prepAttackWarriors.Condition = [](const World* w,const Precondition* prep) -> bool {
-        return w->GetWarriorCount() >= prep->getMultiplicateur();
+        return w->GetWarriorCount() >= prep->GetMultiplicateur();
     };
 
     AttackEnemy.Action = ActionAttackEnemy;
     AttackEnemy.AddToVecPrecondition(&prepAttackWarriors);
     AttackEnemy.AddToVecPrecondition(&prepAttackLook);
     // LookForEnemy state --------------------
-    States LookForEnemy("Look for Enemy", Look, 5);
-    Precondition prepLookForEnemy(Look, 1);
+    States LookForEnemy("Look for Enemy", LookCreateWarrior, 5);
+    Precondition prepLookForEnemy(LookCreateWarrior, 1);
 
     prepLookForEnemy.Condition = [](const World* w,const Precondition* prep) -> bool {
-        return (w->GetWarriorCount() > 0 || w->GetVillagerCount() > 0);
+        return (w->GetWarriorCount() > 0);
     };
 
     LookForEnemy.Action = ActionLookForEnemy;
@@ -177,28 +177,35 @@ int main()
     possibility.push_back(&CreateWarrior);
     possibility.push_back(&MineIron);
     possibility.push_back(&MineGold);
+    possibility.push_back(&CutWood);
+    possibility.push_back(&CreateBread);
+    possibility.push_back(&CreateFarm);
 
     #pragma endregion
 
     // World -----------------
 	World world = World();
     GoapMachine gp(possibility,&world);
-    world.SetBreadCount(20);
-    world.SetWoodCount(10);
-    world.SetIronCount(10);
+    world.SetVillagerCount(2);
+
    
 
     // Goap machine hash map setup -------------
-    gp.AddToHmap(Villager, { &CreateBread });
-    gp.AddToHmap(Wood, { &CreateVillager });
-    gp.AddToHmap(Iron, { &CreateVillager });
-    gp.AddToHmap(Gold, { &CreateVillager });
-    gp.AddToHmap(Farm, { &CutWood});
-    gp.AddToHmap(Bread, { &CreateFarm, &CreateVillager});
-    gp.AddToHmap(Warrior, { &MineIron, &MineGold,&CreateBread });
-    gp.AddToHmap(Attack, { &LookForEnemy, &CreateWarrior });
-    gp.AddToHmap(Bread, { &CreateVillager });
-    gp.AddToHmap(Look, { &CreateVillager,&CreateWarrior });
+    gp.AddToHmap(Villager, &CreateBread );
+    gp.AddToHmap(Wood,  &CreateVillager );
+    gp.AddToHmap(Iron,  &CreateVillager );
+    gp.AddToHmap(Gold,  &CreateVillager );
+    gp.AddToHmap(BreadFarm,  &CreateVillager);
+    gp.AddToHmap(BreadVillager, &CreateVillager);
+    gp.AddToHmap(WarriorIron, &MineIron);
+    gp.AddToHmap(WarriorGold, &MineGold);
+    gp.AddToHmap(WarriorBread, &CreateBread);
+    gp.AddToHmap(AttackLook,&LookForEnemy);
+    gp.AddToHmap(AttackWarrior, &CreateWarrior);
+    gp.AddToHmap(BreadVillager, &CreateVillager );
+    gp.AddToHmap(LookCreateWarrior, &CreateWarrior );
+    gp.AddToHmap(FarmWood, &CutWood );
+    gp.AddToHmap(FarmVillager, &CreateVillager );
 
 
     Node* idx = gp.Execute(&AttackEnemy);

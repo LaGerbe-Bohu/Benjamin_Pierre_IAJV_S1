@@ -11,9 +11,17 @@ enum TypeState {
 	Gold,
 	Warrior,
 	Farm,
-	Bread,
+	BreadFarm,
+	BreadVillager,
+	WarriorIron,
+	WarriorGold,
+	WarriorBread,
+	AttackLook,
+	AttackWarrior,
 	Attack,
-	Look
+	LookCreateWarrior,
+	FarmVillager,
+	FarmWood
 };
 
 class Precondition
@@ -25,9 +33,13 @@ class Precondition
 	public :
         Precondition(TypeState myTypeState, int myMultiplicateur) :state(myTypeState), multiplicateur(myMultiplicateur) {};
 
-        int getMultiplicateur() const {
+        int GetMultiplicateur() const {
             return multiplicateur;
         }
+
+		TypeState GetTypeState() {
+			return state;
+		}
 
         bool(*Condition)(const World* world,const Precondition* prep );
 };
