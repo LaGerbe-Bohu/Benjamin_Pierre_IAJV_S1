@@ -4,6 +4,10 @@
 #include "../include/States.h"
 #include "../include/World.h"
 #include "../include/GoapMachines.h"
+#include <chrono>
+typedef std::chrono::high_resolution_clock Time;
+typedef std::chrono::milliseconds ms;
+typedef std::chrono::duration<float> fsec;
 
 void ActionCreateVillager(World* myWorld) {
 	myWorld->SetVillagerCount(myWorld->GetVillagerCount() + 1);
@@ -68,7 +72,13 @@ void ActionLookForEnemy(World* myWorld) {
 
 void InitStates() {
 
-#pragma region StatesInit
+}
+
+int main()
+{
+	//InitStates();
+
+    #pragma region StatesInit
 
     // Villager state --------------
     States CreateVillager("Villager created.", Villager, 3);
@@ -203,7 +213,7 @@ void InitStates() {
     BigPartyState.AddToVecPrecondition(&prepPartyVillagoies);
     BigPartyState.AddToVecPrecondition(&prepPartyGold);
     BigPartyState.AddToVecPrecondition(&prepPartyWine);
-    
+
     // Priest ----------------------
     States CreatePriest("Create Priest", PriestParty, 2);
     Precondition prepPriestParty(PriestParty, 1);
@@ -276,7 +286,7 @@ void InitStates() {
     LookForEnemy.AddToVecPrecondition(&prepLookForEnemy);
     std::vector<States*> possibility;
 
-    
+
 
 
 #pragma endregion
@@ -301,8 +311,8 @@ void InitStates() {
     gp.AddToHmap(LookCreateWarrior, &CreateWarrior);
     gp.AddToHmap(FarmWood, &CutWood);
     gp.AddToHmap(FarmVillager, &CreateVillager);
-    
-    
+
+
     gp.AddToHmap(AttackChurch, &CreateChurch);
     gp.AddToHmap(ChurchStone,&MineStone);
     gp.AddToHmap(ChurchPriest,&CreatePriest);
@@ -314,18 +324,11 @@ void InitStates() {
     gp.AddToHmap(PartyVillagoies,&CreateVillager);
     gp.AddToHmap(PartyGold,&MineGold);
     gp.AddToHmap(PartyWine,&CreateWine);
-    
 
-    clock_t start, end;
-    start = clock();
-    //InitStates();
-    Node* idx;
-    for (int i = 0; i < 1000000; i++)
-    {
-        idx = gp.Execute(&AttackEnemy);
 
-    }
-    end = clock();
+    auto t0 = Time::now();
+    Node* idx = gp.Execute(&AttackEnemy);
+    auto t1 = Time::now();
 
     std::cout << " Bread : " << world.GetBreadCount() << std::endl;
     std::cout << " Villager : " << world.GetVillagerCount() << std::endl;
@@ -340,11 +343,8 @@ void InitStates() {
         idx = idx->GetPrev();
     }
 
-
-    double time_taken = double(end - start) / double(CLOCKS_PER_SEC);
-    std::cout << "Time taken by program is : " << std::fixed
-        << time_taken << std::setprecision(5);
-    std::cout << " sec " << std::endl;
+    fsec fs = t1 - t0;
+    std::cout << fs.count() << "s\n";
 }
 
 int main()
