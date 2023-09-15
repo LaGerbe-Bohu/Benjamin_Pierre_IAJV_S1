@@ -22,7 +22,17 @@ enum TypeState {
 	LookCreateWarrior,
 	FarmVillager,
 	FarmWood,
-	VillagerBread
+	VillagerBread,
+	Stone,
+	ChurchWood,
+	ChurchPrist,
+	ChurchStone,
+	WineParty,
+	WineVillager,
+	PristWine,
+	PartyGold,
+	PartyVillagoies,
+	WineWood
 };
 
 class Precondition

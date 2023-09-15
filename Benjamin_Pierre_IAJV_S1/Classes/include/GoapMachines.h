@@ -20,7 +20,9 @@ public:
 	}
 
 	~Node() {
-		
+		delete currentWorld;
+		delete State;
+		delete prev;
 	}
 
 	World* GetWorld() const {
@@ -80,6 +82,14 @@ class GoapMachine {
 
 	public :
         GoapMachine(std::vector<States*> myPossibleStates,World* myWorld):possibleStates(myPossibleStates), world(myWorld) {};
+
+		~GoapMachine() {
+			possibleStates.clear();
+			EffectMap.clear();
+			openNode.clear();
+			vecNotMet.clear();
+		
+		}
 
         Node* Execute(States* myRoot);
 

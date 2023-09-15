@@ -6,14 +6,21 @@ class World {
         // Living things
         int villagerCount;
         int warriorCount;
+        int pristCount;
         int enemyLivesCount;
+        
         bool enemyFound;
+        bool Party;
+
 
         // Ressources
         int breadCount;
         int ironCount;
         int goldCount;
         int woodCount;
+        int wineCount;
+        int stoneCount;
+        int churchCount;
 
         // Buildings
         int farmCount;
@@ -37,6 +44,8 @@ class World {
             this->ironCount = myWorld->ironCount;
         }
 
+
+
         World& operator=(const World* myWorld) {
             this->breadCount = myWorld->breadCount;
             this->enemyLivesCount = myWorld->enemyLivesCount;
@@ -59,7 +68,12 @@ class World {
         int GetGoldCount() const;
         int GetWoodCount() const;
         int GetFarmCount() const;
+        int GetWineCount() const;
         bool GetEnemyFound() const;
+        bool GetParty() const;
+        int GetPrist() const;
+        int GetStone() const;
+        int GetChurch() const;
 
         // Setters
         void SetVillagerCount(int villagerCount);
@@ -71,6 +85,11 @@ class World {
         void SetWoodCount(int myWoodCount);
         void SetFarmCount(int myFarmCount);
         void SetEnemyFound(bool myEnemyFound);
+        void SetParty(bool myParty);
+        void SetWineCount(int myWineCount);
+        void SetPristCount(int myPristCount);
+        void SetStoneCount(int myStoneCount);
+        void SetChurchCount(int myChurchCount);
 };
 
 #endif //BENJAMIN_PIERRE_IAJV_S1_WORLD_H

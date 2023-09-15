@@ -46,8 +46,33 @@ int World::GetFarmCount() const {
     return farmCount;
 }
 
+int World::GetWineCount() const
+{
+    return wineCount;
+}
+
 bool World::GetEnemyFound() const {
     return enemyFound;
+}
+
+bool World::GetParty() const
+{
+    return Party;
+}
+
+int World::GetPrist() const
+{
+    return pristCount;
+}
+
+int World::GetStone() const
+{
+    return stoneCount;
+}
+
+int World::GetChurch() const
+{
+    return churchCount;
 }
 
 void World::SetVillagerCount(int myVillagerCount) {
@@ -85,3 +110,29 @@ void World::SetFarmCount(int myFarmCount) {
 void World::SetEnemyFound(bool myEnemyFound) {
     enemyFound = myEnemyFound;
 }
+
+void World::SetParty(bool myParty)
+{
+    this->Party = myParty;
+}
+
+void World::SetWineCount(int myWineCount)
+{
+    this->wineCount = myWineCount;
+}
+
+void World::SetPristCount(int myPristCount)
+{
+    pristCount = myPristCount;
+}
+
+void World::SetStoneCount(int myStoneCount)
+{
+    stoneCount = myStoneCount;
+}
+
+void World::SetChurchCount(int myChurchCount)
+{
+    myChurchCount = myChurchCount;
+}
+
