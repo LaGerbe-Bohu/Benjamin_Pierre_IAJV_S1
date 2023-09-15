@@ -3,7 +3,6 @@
 #include <vector>
 #include <unordered_map>
 class Precondition;
-class States;
 class World;
 
 class Node {
@@ -16,15 +15,12 @@ class Node {
 
 public:
 	Node(int myHeuristic, States* myState, World* myWorld) : heuristic(myHeuristic), State(myState), currentWorld(myWorld) {
-		this->nonMetPrecondition = myState->vecPreconditions;
 	}
 	Node(States* myState, World* myWorld) : State(myState), currentWorld(myWorld) {
-		this->nonMetPrecondition = myState->vecPreconditions;
 	}
 
 	~Node() {
-		delete currentWorld;
-		delete State;
+		
 	}
 
 	World* GetWorld() const {
@@ -41,6 +37,10 @@ public:
 
 	std::vector<Precondition*> GetNonMetPrecondition() const {
 		return nonMetPrecondition;
+	}
+
+	void AddNonMetPrecondition(Precondition* prep) {
+		this->nonMetPrecondition.push_back(prep);
 	}
 
 	void SetNonMetPrecondition(std::vector<Precondition*> nonMet) {
@@ -84,8 +84,13 @@ class GoapMachine {
         Node* Execute(States* myRoot);
 
         std::unordered_map<TypeState, std::vector<States*>> GetEffectMap() {
+
             return EffectMap;
         }
+
+		void AddToHmap(TypeState typeState,std::vector<States*> states) {
+			EffectMap[typeState] = states;
+		}
 
         void AddAllOptionsToOpenNode();
 };

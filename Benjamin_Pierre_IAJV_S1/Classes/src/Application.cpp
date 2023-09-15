@@ -10,15 +10,15 @@ void ActionCreateVillager(World* myWorld) {
 }
 
 void ActionCutWood(World* myWorld) {
-    myWorld->SetWoodCount(myWorld->GetWoodCount() + 1);
+    myWorld->SetWoodCount(myWorld->GetWoodCount() + 10);
 }
 
 void ActionMineIron(World* myWorld) {
-    myWorld->SetIronCount(myWorld->GetIronCount() + 1);
+    myWorld->SetIronCount(myWorld->GetIronCount() + 10);
 }
 
 void ActionMineGold(World* myWorld) {
-    myWorld->SetGoldCount(myWorld->GetGoldCount() + 1);
+    myWorld->SetGoldCount(myWorld->GetGoldCount() + 10);
 }
 
 void ActionCreateFarm(World* myWorld) {
@@ -26,7 +26,7 @@ void ActionCreateFarm(World* myWorld) {
 }
 
 void ActionCreateBread(World* myWorld) {
-    myWorld->SetBreadCount(myWorld->GetBreadCount() + 1);
+    myWorld->SetBreadCount(myWorld->GetBreadCount() + 10);
 }
 
 void ActionCreateWarrior(World* myWorld) {
@@ -62,6 +62,8 @@ int main()
     };
 
     CreateVillager.Action = ActionCreateVillager;
+    CreateVillager.AddToVecPrecondition(&prepVillager);
+
 
     // Wood state -------------------
     States CutWood("Cut wood",Wood,2);
@@ -71,6 +73,7 @@ int main()
     };
 
     CutWood.Action = ActionCutWood;
+    CutWood.AddToVecPrecondition(&prepWood);;
 
     // Iron state ---------------
     States MineIron("Mine iron",Iron,2);
@@ -80,6 +83,7 @@ int main()
     };
 
     MineIron.Action = ActionMineIron;
+    MineIron.AddToVecPrecondition(&prepIron);;
 
     // Gold state ---------------
     States MineGold("Mine Gold",Gold,2);
@@ -89,6 +93,8 @@ int main()
     };
 
     MineGold.Action = ActionMineGold;
+    MineGold.AddToVecPrecondition(&prepGold);
+    
 
     // Farm state ---------------
     States CreateFarm("Create Farm",Farm,3);
@@ -101,7 +107,10 @@ int main()
         return w->GetWoodCount() >= prep->getMultiplicateur();
     };
 
+
     CreateFarm.Action = ActionCreateFarm;
+    CreateFarm.AddToVecPrecondition(&prepFarm);
+    CreateFarm.AddToVecPrecondition(&prepFarmWood);
 
     // Bread state --------------------
     States CreateBread("Create Bread",Bread,2);
@@ -111,11 +120,12 @@ int main()
     };
     Precondition prepBreadFarm(Bread, 1);
     prepBreadFarm.Condition = [](const World* w, const Precondition* prep) -> bool {
-        return  w->GetFarmCount() > prep->getMultiplicateur();
+        return  w->GetFarmCount() >= prep->getMultiplicateur();
     };
 
     CreateBread.Action = ActionCreateBread;
-
+    CreateBread.AddToVecPrecondition(&prepBreadFarm);
+    CreateBread.AddToVecPrecondition(&prepBreadVillager);
     // Warrior state --------------------
     States CreateWarrior("Create Warrior", Warrior, 5);
     Precondition prepWarriorIron(Warrior, 1);
@@ -132,6 +142,9 @@ int main()
     };
 
     CreateWarrior.Action = ActionCreateWarrior;
+    CreateWarrior.AddToVecPrecondition(&prepWarriorBread);
+    CreateWarrior.AddToVecPrecondition(&prepWarriorGold);
+    CreateWarrior.AddToVecPrecondition(&prepWarriorIron);
 
     // Attack state --------------------
     States AttackEnemy("Attack Enemy", Attack, 10);
@@ -141,11 +154,12 @@ int main()
     };
     Precondition prepAttackWarriors(Attack, 10);
     prepAttackWarriors.Condition = [](const World* w,const Precondition* prep) -> bool {
-        return w->GetWarriorCount() >= prep->getMultiplicateur() || w->GetVillagerCount() >= prep->getMultiplicateur();
+        return w->GetWarriorCount() >= prep->getMultiplicateur();
     };
 
     AttackEnemy.Action = ActionAttackEnemy;
-
+    AttackEnemy.AddToVecPrecondition(&prepAttackWarriors);
+    AttackEnemy.AddToVecPrecondition(&prepAttackLook);
     // LookForEnemy state --------------------
     States LookForEnemy("Look for Enemy", Look, 5);
     Precondition prepLookForEnemy(Look, 1);
@@ -155,7 +169,7 @@ int main()
     };
 
     LookForEnemy.Action = ActionLookForEnemy;
-
+    LookForEnemy.AddToVecPrecondition(&prepLookForEnemy);
     std::vector<States*> possibility;
 
     possibility.push_back(&LookForEnemy);
@@ -166,83 +180,28 @@ int main()
 
     #pragma endregion
 
+    // World -----------------
 	World world = World();
     GoapMachine gp(possibility,&world);
-    world.SetWarriorCount(0);
-    world.SetBreadCount(10);
+    world.SetBreadCount(20);
+    world.SetWoodCount(10);
+    world.SetIronCount(10);
+   
+
+    // Goap machine hash map setup -------------
+    gp.AddToHmap(Villager, { &CreateBread });
+    gp.AddToHmap(Wood, { &CreateVillager });
+    gp.AddToHmap(Iron, { &CreateVillager });
+    gp.AddToHmap(Gold, { &CreateVillager });
+    gp.AddToHmap(Farm, { &CutWood});
+    gp.AddToHmap(Bread, { &CreateFarm, &CreateVillager});
+    gp.AddToHmap(Warrior, { &MineIron, &MineGold,&CreateBread });
+    gp.AddToHmap(Attack, { &LookForEnemy, &CreateWarrior });
+    gp.AddToHmap(Bread, { &CreateVillager });
+    gp.AddToHmap(Look, { &CreateVillager,&CreateWarrior });
+
+
     Node* idx = gp.Execute(&AttackEnemy);
-
-    std::vector<States*> createVillagerS;
-    createVillagerS.push_back(&CreateBread);
-    std::pair<TypeState, std::vector<States*>> pV(Villager,createVillagerS);
-    createVillagerS = std::vector<States*>();
-    gp.GetEffectMap().insert(pV);
-
-    std::vector<States*> cutWoodS;
-    cutWoodS.push_back(&CreateVillager);
-    std::pair<TypeState, std::vector<States*>> pW(Wood,cutWoodS);
-    cutWoodS = std::vector<States*>();
-    gp.GetEffectMap().insert(pW);
-
-    std::vector<States*> mineIronS;
-    mineIronS.push_back(&CreateVillager);
-    std::pair<TypeState, std::vector<States*>> pI(Iron,mineIronS);
-    mineIronS = std::vector<States*>();
-    gp.GetEffectMap().insert(pI);
-
-    std::vector<States*> mineGoldS;
-    mineGoldS.push_back(&CreateVillager);
-    std::pair<TypeState, std::vector<States*>> pG(Gold,mineGoldS);
-    mineGoldS = std::vector<States*>();
-    gp.GetEffectMap().insert(pG);
-
-    std::vector<States*> createFarmS;
-    createFarmS.push_back(&CreateVillager);
-    createFarmS.push_back(&CutWood);
-    createFarmS.push_back(&CutWood);
-    createFarmS.push_back(&CutWood);
-    createFarmS.push_back(&CutWood);
-    createFarmS.push_back(&CutWood);
-    std::pair<TypeState, std::vector<States*>> pF(Farm,createFarmS);
-    createFarmS = std::vector<States*>();
-    gp.GetEffectMap().insert(pF);
-
-    std::vector<States*> createBreadS;
-    createBreadS.push_back(&CreateFarm);
-    createBreadS.push_back(&CreateVillager);
-    std::pair<TypeState, std::vector<States*>> pB(Bread,createBreadS);
-    createBreadS = std::vector<States*>();
-    gp.GetEffectMap().insert(pB);
-
-    std::vector<States*> createWarriorS;
-    createWarriorS.push_back(&MineIron);
-    createWarriorS.push_back(&MineGold);
-    createWarriorS.push_back(&CreateBread);
-    std::pair<TypeState, std::vector<States*>> pWa(Warrior,createWarriorS);
-    createWarriorS = std::vector<States*>();
-    gp.GetEffectMap().insert(pWa);
-
-    std::vector<States*> attackEnemyS;
-    attackEnemyS.push_back(&LookForEnemy);
-    attackEnemyS.push_back(&CreateWarrior);
-    attackEnemyS.push_back(&CreateWarrior);
-    attackEnemyS.push_back(&CreateWarrior);
-    attackEnemyS.push_back(&CreateWarrior);
-    attackEnemyS.push_back(&CreateWarrior);
-    attackEnemyS.push_back(&CreateWarrior);
-    attackEnemyS.push_back(&CreateWarrior);
-    attackEnemyS.push_back(&CreateWarrior);
-    attackEnemyS.push_back(&CreateWarrior);
-    attackEnemyS.push_back(&CreateWarrior);
-    std::pair<TypeState, std::vector<States*>> pA(Attack,attackEnemyS);
-    attackEnemyS = std::vector<States*>();
-    gp.GetEffectMap().insert(pA);
-
-    std::vector<States*> lookForEnemyS;
-    lookForEnemyS.push_back(&CreateVillager);
-    std::pair<TypeState, std::vector<States*>> pL(Bread,lookForEnemyS);
-    lookForEnemyS = std::vector<States*>();
-    gp.GetEffectMap().insert(pL);
 
 	std::cout << " Bread : " << world.GetBreadCount() << std::endl;
 	std::cout << " Villager : " << world.GetVillagerCount() << std::endl;

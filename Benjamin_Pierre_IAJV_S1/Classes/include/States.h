@@ -29,7 +29,13 @@ class States {
             return cost;
         }
 
-        std::vector<Precondition*> vecPreconditions;
+        std::vector<Precondition*> GetVecPrecondition() {
+            return VecPreconditions;
+        }
+
+        void AddToVecPrecondition(Precondition* prep) {
+            this->VecPreconditions.push_back(prep);
+        }
 
         // /*Fonction de precondition */
         void SetCost(int myCost) {

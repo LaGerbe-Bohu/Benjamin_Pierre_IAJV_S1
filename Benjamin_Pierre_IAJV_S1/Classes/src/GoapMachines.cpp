@@ -62,37 +62,76 @@ Node* GoapMachine::Execute( States* myRoot) {
 	World myWorld = world;
 	Node* currentNode = new Node(myRoot, new World(myWorld));
 	currentNode->SetPrev(nullptr);
-	currentNode->SetHeuristique(currentNode->GetNonMetPrecondition().size());
+	
+	currentNode->SetHeuristique(currentNode->GetState()->GetVecPrecondition().size());
 	openNode.push_back(currentNode);
 
-	for (int i = 0; i < openNode.size(); i++)
+	while(!openNode.empty())
 	{
-		if (openNode[i]->GetHeuristique() <= 0) {
-			currentNode = openNode[i];
-			return currentNode;
+
+		for (int i = 0; i < openNode.size(); i++)
+		{
+			if (openNode[i]->GetHeuristique() <= 0) {
+				currentNode = openNode[i];
+				return currentNode;
+			}
 		}
 		
 		int idx = FindCorrectNode(openNode);
 		currentNode = openNode[idx];
+		for (int i = 0; i < currentNode->GetState()->GetVecPrecondition().size(); i++)
+		{
+			currentNode->AddNonMetPrecondition(currentNode->GetState()->GetVecPrecondition()[i]);
+		}
+
 		openNode.erase(openNode.begin() + idx);
 
 		std::vector<States*> state = GetEffectMap()[currentNode->GetState()->GetTypeState()];
-		
-	
+
+		for (int i = 0; i < currentNode->GetNonMetPrecondition().size(); i++)
+		{
+
+		}
+
 		for (int j = 0; j < state.size(); j++)
 		{
-			Node n(state[j], new World(currentNode->GetWorld()));
-			n.GetState()->Action(n.GetWorld());
-			n.SetPrev(currentNode);
+			Node* n = new Node(state[j], new World(currentNode->GetWorld()));
+
+			for (int k = 0; k < n->GetState()->GetVecPrecondition().size(); k++) {
+				Precondition* prep = n->GetState()->GetVecPrecondition()[k];
+				if (!prep->Condition(&myWorld, prep)) {
+					n->AddNonMetPrecondition(n->GetState()->GetVecPrecondition()[k]);
+				}
+
+			}
+
+			n->GetState()->Action(n->GetWorld());
+			n->SetPrev(currentNode);
 			
-			for (int k = 0; k < currentNode->GetState()->vecPreconditions.size(); k++)
+			for (int k = 0; k < currentNode->GetNonMetPrecondition().size(); k++)
 			{
-				Precondition* prep = currentNode->GetState()->vecPreconditions[k];
-				if (!prep->Condition(n.GetWorld(),prep)) {
-					n.GetNonMetPrecondition().push_back(prep);
+				Precondition* prep = currentNode->GetNonMetPrecondition()[k];
+				if (!prep->Condition(n->GetWorld(),prep)) {
+					n->AddNonMetPrecondition(currentNode->GetNonMetPrecondition()[k]);
+					
 				}
 			}
-			n.SetHeuristique(n.GetNonMetPrecondition().size());
+
+
+			n->SetHeuristique(n->GetNonMetPrecondition().size());
+
+			bool isCompleted = true;
+			for (int k = 0; k < currentNode->GetState()->GetVecPrecondition().size(); k++)
+			{
+				Precondition* prep = currentNode->GetState()->GetVecPrecondition()[k];
+				if (!prep->Condition(&myWorld, prep)) {
+					n->AddNonMetPrecondition(currentNode->GetState()->GetVecPrecondition()[k]);
+					isCompleted = false;
+				}
+			}
+		
+			openNode.push_back(n);
+					
 		}
 		
 	}
