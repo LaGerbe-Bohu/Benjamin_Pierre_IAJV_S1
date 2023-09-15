@@ -1,4 +1,5 @@
 ﻿#include <iostream>
+#include <iomanip>
 
 #include "../include/States.h"
 #include "../include/World.h"
@@ -50,6 +51,10 @@ void InitStates() {
 
 int main()
 {
+    clock_t start, end;
+    start = clock();
+
+    std::ios_base::sync_with_stdio(false);
 	//InitStates();
 
     #pragma region StatesInit
@@ -94,7 +99,7 @@ int main()
 
     MineGold.Action = ActionMineGold;
     MineGold.AddToVecPrecondition(&prepGold);
-    
+
 
     // Farm state ---------------
     States CreateFarm("Create Farm",Farm,3);
@@ -188,7 +193,7 @@ int main()
     GoapMachine gp(possibility,&world);
     world.SetVillagerCount(2);
 
-   
+
 
     // Goap machine hash map setup -------------
     gp.AddToHmap(Villager, &CreateBread );
@@ -222,5 +227,11 @@ int main()
         std::cout << idx->GetState()->GetLabel() << std::endl;
         idx = idx->GetPrev();
     }
+    end = clock();
+
+    double time_taken = double(end - start) / double(CLOCKS_PER_SEC);
+    std::cout << "Time taken by program is : " << std::fixed
+         << time_taken << std::setprecision(5);
+    std::cout << " sec " << std::endl;
     return 0;
 }
