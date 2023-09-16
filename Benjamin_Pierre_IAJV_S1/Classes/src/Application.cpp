@@ -1,12 +1,9 @@
 ﻿#include <iostream>
-#include <iomanip>
-
 #include "../include/States.h"
 #include "../include/World.h"
 #include "../include/GoapMachines.h"
 #include <chrono>
 typedef std::chrono::high_resolution_clock Time;
-typedef std::chrono::milliseconds ms;
 typedef std::chrono::duration<float> fsec;
 
 void ActionCreateVillager(World* myWorld) {
@@ -280,10 +277,7 @@ void InitStates() {
     LookForEnemy.AddToVecPrecondition(&prepLookForEnemy);
     std::vector<States*> possibility;
 
-
-
-
-#pragma endregion
+    #pragma endregion
 
     // World -----------------
     World world = World();
@@ -338,15 +332,13 @@ void InitStates() {
     }
 
     fsec fs = t1 - t0;
-    std::cout << fs.count() << "s\n";
+    std::cout << "\nThe program ran in " << fs.count() << " seconds." << std::endl;
 }
 
 int main()
 {
-    std::cout << " Begin" << std::endl;
-
+    std::cout << "Starting GOAP" << std::endl;
     InitStates();
-    std::cout << " end " << std::endl;
-
+    std::cout << "Ending GOAP " << std::endl;
     return 0;
 }

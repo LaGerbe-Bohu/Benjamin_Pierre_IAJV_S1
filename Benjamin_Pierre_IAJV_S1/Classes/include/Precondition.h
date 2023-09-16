@@ -42,13 +42,13 @@ class Precondition
 {
     private:
         TypeState state;
-        int multiplicateur;
+        int multiplicator;
 
 	public :
-        Precondition(TypeState myTypeState, int myMultiplicateur) :state(myTypeState), multiplicateur(myMultiplicateur) {};
+        Precondition(TypeState myTypeState, int myMultiplicateur) : state(myTypeState), multiplicator(myMultiplicateur) {};
 
         int GetMultiplicateur() const {
-            return multiplicateur;
+            return multiplicator;
         }
 
 		TypeState GetTypeState() {

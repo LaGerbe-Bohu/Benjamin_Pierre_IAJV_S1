@@ -8,10 +8,6 @@ class World {
         int warriorCount;
         int PriestCount;
         int enemyLivesCount;
-        
-        bool enemyFound;
-        bool Party;
-
 
         // Ressources
         int breadCount;
@@ -24,6 +20,10 @@ class World {
 
         // Buildings
         int farmCount;
+
+        // Booleans
+        bool enemyFound;
+        bool Party;
 
     public:
         // Default constructor
@@ -56,8 +56,6 @@ class World {
             this->churchCount = myWorld->churchCount;
             this->farmCount = myWorld->farmCount;
         }
-
-
 
         World& operator=(const World* myWorld) {
             this->villagerCount = myWorld->villagerCount;

@@ -1,9 +1,6 @@
 #include "../include/GoapMachines.h"
-#include "../include/States.h"
-#include "../include/World.h"
 #include <limits>
 #include <cassert>
-#include <iostream>
 #include <algorithm>
 
 void Node::SimulatePath( World* myWorld) {
@@ -17,7 +14,6 @@ void Node::SimulatePath( World* myWorld) {
 		}
 		idx = idx->GetPrev();
 	}
-
 	this->currentWorld = world;*/
 }
 

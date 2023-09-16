@@ -1,6 +1,5 @@
 #include "../include/World.h"
 
-
 int World::GetVillagerCount() const {
     return villagerCount;
 }
@@ -122,4 +121,3 @@ void World::SetChurchCount(int myChurchCount)
 {
     churchCount = myChurchCount;
 }
-
